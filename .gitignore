@@ -1,0 +1,3 @@
+# clangd files
+compile_commands.json
+.cache
