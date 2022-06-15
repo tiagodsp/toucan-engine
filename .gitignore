@@ -1,3 +1,14 @@
 # clangd files
 compile_commands.json
 .cache
+
+# build files
+build/
+.build/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.lib
