@@ -1,8 +1,9 @@
 #include "App.h"
-#include "Core/Events/WindowEvents.h"
 #include "Events.h"
+#include "Core/Events/WindowEvents.h"
+#include "Core/Events/KeyEvents.h"
+#include "Core/Events/MouseEvents.h"
 #include "Window.h"
-#include <memory>
 
 namespace Toucan
 {
@@ -21,10 +22,22 @@ void App::Run()
     bool shouldTerminate = false;
     EventDispatcher::Get().AddEventListener<WindowCloseEvent>(
         [this, &shouldTerminate](const Event *e) { shouldTerminate = true; });
-    while (!shouldTerminate)
-    {
-        m_Window->Update();
-    }
+    EventDispatcher::Get().AddEventListener<KeyPressedEvent>(
+        [this](const Event *e) { CORE_LOGF("Key pressed: {}", ((const KeyPressedEvent *)e)->GetKeyCode()); });
+    EventDispatcher::Get().AddEventListener<KeyReleasedEvent>(
+        [this](const Event *e) { CORE_LOGF("Key released: {}", ((const KeyReleasedEvent *)e)->GetKeyCode()); });
+    EventDispatcher::Get().AddEventListener<MouseKeyPressedEvent>([this](const Event *e) {
+        CORE_LOGF("Mouse button pressed: {}", ((const MouseKeyPressedEvent *)e)->GetKeyCode());
+    });
+    EventDispatcher::Get().AddEventListener<MouseKeyReleasedEvent>([this](const Event *e) {
+        CORE_LOGF("Mouse button released: {}", ((const MouseKeyReleasedEvent *)e)->GetKeyCode());
+    });
+    EventDispatcher::Get().AddEventListener<MouseMotionEvent>([this](const Event *e) {
+        CORE_LOGF("Mouse moved: X:{} Y:{}", ((const MouseMotionEvent *)e)->GetPosition().x,
+                  ((const MouseMotionEvent *)e)->GetPosition().y);
+    });
+
+    while (!shouldTerminate) { m_Window->Update(); }
 }
 
 } // namespace Toucan

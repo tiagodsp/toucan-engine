@@ -1,13 +1,16 @@
-#include <memory>
 #ifdef BUILD_DARWIN
+#include "Window.h"
 
-#include "Core/Events/WindowEvents.h"
 #include "Events.h"
+#include "Core/Events/WindowEvents.h"
+#include "Core/Events/KeyEvents.h"
+#include "Core/Events/MouseEvents.h"
+
+#include "SDL_events.h"
 #include "SDL2/SDL.h"
 #include "SDL_error.h"
 #include "SDL_render.h"
 #include "SDL_video.h"
-#include "Window.h"
 
 namespace Toucan
 {
@@ -51,9 +54,21 @@ void Window::Update()
     SDL_PollEvent(&event);
 
     // Handle the event
-    if (event.type == SDL_QUIT)
+    if (event.type == SDL_QUIT) { EventDispatcher::Get().Dispatch(new WindowCloseEvent()); }
+    if (event.type == SDL_KEYDOWN) { EventDispatcher::Get().Dispatch(new KeyPressedEvent(event.key.keysym.sym)); }
+    if (event.type == SDL_KEYUP) { EventDispatcher::Get().Dispatch(new KeyReleasedEvent(event.key.keysym.sym)); }
+    if (event.type == SDL_MOUSEBUTTONDOWN)
     {
-        EventDispatcher::Get().Dispatch(new WindowCloseEvent());
+        EventDispatcher::Get().Dispatch(new MouseKeyPressedEvent({event.button.x, event.button.y}, event.button.button));
+    }
+    if (event.type == SDL_MOUSEBUTTONUP)
+    {
+        EventDispatcher::Get().Dispatch(new MouseKeyReleasedEvent({event.button.x, event.button.y}, event.button.button));
+    }
+    if (event.type == SDL_MOUSEMOTION)
+    {
+        EventDispatcher::Get().Dispatch(
+            new MouseMotionEvent({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel}));
     }
 }
 

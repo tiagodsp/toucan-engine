@@ -1,4 +1,5 @@
 #pragma once
+#include "CoreTypes.h"
 #include "Toucan.h"
 
 namespace Toucan
@@ -8,9 +9,7 @@ struct Type
 {
     const char *Name;
     size_t Size;
-    Type(const char *_Name, size_t _Size) : Name(_Name), Size(_Size)
-    {
-    }
+    Type(const char *_Name, size_t _Size) : Name(_Name), Size(_Size) {}
 };
 
 struct Member
@@ -18,18 +17,13 @@ struct Member
     const char *Name;
     Type Type;
     size_t Offset;
-    Member(const char *_Name, struct Type _Type, size_t _Offset) : Name(_Name), Type(_Type), Offset(_Offset)
-    {
-    }
+    Member(const char *_Name, struct Type _Type, size_t _Offset) : Name(_Name), Type(_Type), Offset(_Offset) {}
 };
 
 struct StructType : Type
 {
     std::vector<Member> Members;
-    StructType(void (*init)(StructType *)) : Type(nullptr, 0)
-    {
-        init(this);
-    }
+    StructType(void (*init)(StructType *)) : Type(nullptr, 0) { init(this); }
 };
 
 struct ClassType : Type
@@ -39,10 +33,7 @@ struct ClassType : Type
     std::function<void(void *)> Constructor;
     std::function<void(void *)> Destructor;
 
-    ClassType(void (*init)(ClassType *)) : Type(nullptr, 0)
-    {
-        init(this);
-    }
+    ClassType(void (*init)(ClassType *)) : Type(nullptr, 0) { init(this); }
 };
 
 template <typename T> inline Type *GetPrimitiveType()
@@ -95,14 +86,10 @@ class TypeRegister
     Type *GetTypeByName(const char *name)
     {
         auto it = _Types.find(name);
-        if (it == _Types.end())
-            return nullptr;
+        if (it == _Types.end()) return nullptr;
         return &it->second;
     }
-    void RegisterType(const char *name, Type type)
-    {
-        _Types.insert({name, type});
-    }
+    void RegisterType(const char *name, Type type) { _Types.insert({name, type}); }
 };
 
 // Primitive types --------------------------------------------------------
@@ -111,9 +98,7 @@ class TypeRegister
     class TYPE##Type : public Type                                                                                     \
     {                                                                                                                  \
       public:                                                                                                          \
-        TYPE##Type() : Type(#TYPE, sizeof(TYPE))                                                                       \
-        {                                                                                                              \
-        }                                                                                                              \
+        TYPE##Type() : Type(#TYPE, sizeof(TYPE)) {}                                                                    \
     };                                                                                                                 \
     template <> inline Type *GetPrimitiveType<TYPE>()                                                                  \
     {                                                                                                                  \
@@ -125,9 +110,7 @@ class TypeRegister
     class SCOPE##_##TYPE##Type : public Type                                                                           \
     {                                                                                                                  \
       public:                                                                                                          \
-        SCOPE##_##TYPE##Type() : Type("SCOPE::TYPE", sizeof(SCOPE::TYPE))                                              \
-        {                                                                                                              \
-        }                                                                                                              \
+        SCOPE##_##TYPE##Type() : Type("SCOPE::TYPE", sizeof(SCOPE::TYPE)) {}                                           \
     };                                                                                                                 \
     template <> inline Type *GetPrimitiveType<SCOPE::TYPE>()                                                           \
     {                                                                                                                  \
@@ -140,19 +123,28 @@ DECLARE_PRIMITIVE_TYPE(char);
 DECLARE_PRIMITIVE_TYPE(bool);
 DECLARE_PRIMITIVE_TYPE(float);
 DECLARE_PRIMITIVE_TYPE(double);
-DECLARE_TYPE_SCOPED(glm, vec2);
-DECLARE_TYPE_SCOPED(glm, vec3);
+
+DECLARE_PRIMITIVE_TYPE(String);
+DECLARE_PRIMITIVE_TYPE(Vector2);
+DECLARE_PRIMITIVE_TYPE(Vector3);
+DECLARE_PRIMITIVE_TYPE(Vector4);
+// DECLARE_PRIMITIVE_TYPE(Vector);
+DECLARE_PRIMITIVE_TYPE(Vector2Int);
+DECLARE_PRIMITIVE_TYPE(Vector3Int);
+DECLARE_PRIMITIVE_TYPE(Vector4Int);
+DECLARE_PRIMITIVE_TYPE(Matrix4);
+// DECLARE_PRIMITIVE_TYPE(Quaternion);
+// DECLARE_PRIMITIVE_TYPE(Color);
+// DECLARE_PRIMITIVE_TYPE(Rect);
+// DECLARE_PRIMITIVE_TYPE(Size);
+// DECLARE_PRIMITIVE_TYPE(Point);
+// DECLARE_PRIMITIVE_TYPE(Range);
+
 
 // Constructor and desctuctor helpers
-template <typename TYPE> void Construct(void *object)
-{
-    new (object) TYPE();
-}
+template <typename TYPE> void Construct(void *object) { new (object) TYPE(); }
 
-template <typename TYPE> void Destruct(void *object)
-{
-    ((TYPE *)object)->~TYPE();
-}
+template <typename TYPE> void Destruct(void *object) { ((TYPE *)object)->~TYPE(); }
 // ----------------------------------------------------------------------------
 
 // Helpers to check if Type is a base class -------------------------------------

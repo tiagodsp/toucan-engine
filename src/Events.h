@@ -1,6 +1,7 @@
 #pragma once
 #include "Log.h"
 #include "Toucan.h"
+#include <cstddef>
 #include <cstdlib>
 #include <type_traits>
 
@@ -34,20 +35,14 @@ class EventDispatcher
     };
 
   public:
-    static EventDispatcher &Get()
-    {
-        return m_Instance;
-    }
+    static EventDispatcher &Get() { return m_Instance; }
 
     void Dispatch(const Event *e)
     {
         auto handlers = m_HandlerMap.find(e->GetDerivedType().Name);
         if (handlers != m_HandlerMap.end())
         {
-            for (auto h : handlers->second)
-            {
-                h(e);
-            }
+            for (auto h : handlers->second) { h(e); }
         }
     }
 
@@ -57,8 +52,17 @@ class EventDispatcher
     template <typename E, typename std::enable_if<TypeRegister::IsReflected<E>::value, int>::type = 0>
     void AddEventListener(EventHandler Handler)
     {
-        if (E::StaticType.BaseClass == &Event::StaticType)
-            m_HandlerMap[E::StaticType.Name].push_back(Handler);
+        auto baseType = E::StaticType.BaseClass;
+        while (baseType != nullptr)
+        {
+            if (baseType == &Event::StaticType)
+            {
+                m_HandlerMap[E::StaticType.Name].push_back(Handler);
+                return;
+            }
+            baseType = baseType->BaseClass;
+        }
+        CORE_LOGF("Failed to add event listener for type {}. Not derived from Toucan::Event.", E::StaticType.Name);
     }
 };
 } // namespace Toucan
