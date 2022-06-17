@@ -1,4 +1,13 @@
 ---
 BasedOnStyle: Microsoft
+AllowShortBlocksOnASingleLine: 'true'
+AllowShortCaseLabelsOnASingleLine: 'true'
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Always
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: 'true'
+SortIncludes: 'false'
+IndentWidth: 4
+IncludeBlocks: Regroup
 
 ...
