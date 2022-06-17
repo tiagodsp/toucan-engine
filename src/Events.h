@@ -27,9 +27,12 @@ class EventDispatcher
     using HandlerList = std::vector<EventHandler>;
     std::map<String, HandlerList> m_HandlerMap;
 
-    template <typename T> static char TestIsEventType(Event);
-    template <typename T> static int TestIsEventType(...);
-    template <typename T> struct IsEventType
+    template <typename T>
+    static char TestIsEventType(Event);
+    template <typename T>
+    static int TestIsEventType(...);
+    template <typename T>
+    struct IsEventType
     {
         static constexpr bool value = sizeof(TestIsEventType<T>()) == sizeof(char);
     };

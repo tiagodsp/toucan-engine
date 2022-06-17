@@ -36,7 +36,8 @@ struct ClassType : Type
     ClassType(void (*init)(ClassType *)) : Type(nullptr, 0) { init(this); }
 };
 
-template <typename T> inline Type *GetPrimitiveType()
+template <typename T>
+inline Type *GetPrimitiveType()
 {
     static_assert(true, "Type not supported");
     return nullptr;
@@ -56,19 +57,24 @@ class TypeRegister
         return instance;
     }
 
-    template <typename T> static char Test(decltype(&T::StaticType));
-    template <typename T> static int Test(...);
-    template <typename T> struct IsReflected
+    template <typename T>
+    static char Test(decltype(&T::StaticType));
+    template <typename T>
+    static int Test(...);
+    template <typename T>
+    struct IsReflected
     {
         static constexpr bool value = sizeof(Test<T>(nullptr)) == sizeof(char);
     };
 
-    template <typename T, typename std::enable_if<IsReflected<T>::value, int>::type = 0> Type *GetType()
+    template <typename T, typename std::enable_if<IsReflected<T>::value, int>::type = 0>
+    Type *GetType()
     {
         return &T::StaticType;
     }
 
-    template <typename T, typename std::enable_if<!IsReflected<T>::value, int>::type = 0> Type *GetType()
+    template <typename T, typename std::enable_if<!IsReflected<T>::value, int>::type = 0>
+    Type *GetType()
     {
         return GetPrimitiveType<T>();
     }
@@ -100,7 +106,8 @@ class TypeRegister
       public:                                                                                                          \
         TYPE##Type() : Type(#TYPE, sizeof(TYPE)) {}                                                                    \
     };                                                                                                                 \
-    template <> inline Type *GetPrimitiveType<TYPE>()                                                                  \
+    template <>                                                                                                        \
+    inline Type *GetPrimitiveType<TYPE>()                                                                              \
     {                                                                                                                  \
         static TYPE##Type type;                                                                                        \
         return &type;                                                                                                  \
@@ -112,7 +119,8 @@ class TypeRegister
       public:                                                                                                          \
         SCOPE##_##TYPE##Type() : Type("SCOPE::TYPE", sizeof(SCOPE::TYPE)) {}                                           \
     };                                                                                                                 \
-    template <> inline Type *GetPrimitiveType<SCOPE::TYPE>()                                                           \
+    template <>                                                                                                        \
+    inline Type *GetPrimitiveType<SCOPE::TYPE>()                                                                       \
     {                                                                                                                  \
         static SCOPE##_##TYPE##Type type;                                                                              \
         return &type;                                                                                                  \
@@ -140,30 +148,43 @@ DECLARE_PRIMITIVE_TYPE(Matrix4);
 // DECLARE_PRIMITIVE_TYPE(Point);
 // DECLARE_PRIMITIVE_TYPE(Range);
 
-
 // Constructor and desctuctor helpers
-template <typename TYPE> void Construct(void *object) { new (object) TYPE(); }
+template <typename TYPE>
+void Construct(void *object)
+{
+    new (object) TYPE();
+}
 
-template <typename TYPE> void Destruct(void *object) { ((TYPE *)object)->~TYPE(); }
+template <typename TYPE>
+void Destruct(void *object)
+{
+    ((TYPE *)object)->~TYPE();
+}
 // ----------------------------------------------------------------------------
 
 // Helpers to check if Type is a base class -------------------------------------
-template <typename T> char Test(decltype(&T::f));
-template <typename T> int Test(...);
-template <typename T> struct HasBaseClass
+template <typename T>
+char Test(decltype(&T::f));
+template <typename T>
+int Test(...);
+template <typename T>
+struct HasBaseClass
 {
     static constexpr bool value = sizeof(Test<T>(nullptr)) == sizeof(char);
 };
 // ----------------------------------------------------------------------------
 
 // Helpers to get the base classes of a class ---------------------------------
-template <typename T, typename T2 = void> struct base_of
+template <typename T, typename T2 = void>
+struct base_of
 {
     using type = T2;
 };
 
-template <typename T, typename R> T _base_of(R T::*);
-template <typename T> struct base_of<T, typename std::enable_if<HasBaseClass<T>::value>::type>
+template <typename T, typename R>
+T _base_of(R T::*);
+template <typename T>
+struct base_of<T, typename std::enable_if<HasBaseClass<T>::value>::type>
 {
     using type = decltype(_base_of(&T::f));
 };

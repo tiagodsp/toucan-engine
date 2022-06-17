@@ -33,8 +33,10 @@ void App::Run()
         CORE_LOGF("Mouse button released: {}", ((const MouseKeyReleasedEvent *)e)->GetKeyCode());
     });
     EventDispatcher::Get().AddEventListener<MouseMotionEvent>([this](const Event *e) {
-        CORE_LOGF("Mouse moved: X:{} Y:{}", ((const MouseMotionEvent *)e)->GetPosition().x,
-                  ((const MouseMotionEvent *)e)->GetPosition().y);
+        CORE_LOGF(
+            "Mouse moved: X:{} Y:{}",
+            ((const MouseMotionEvent *)e)->GetPosition().x,
+            ((const MouseMotionEvent *)e)->GetPosition().y);
     });
 
     while (!shouldTerminate) { m_Window->Update(); }

@@ -6,6 +6,15 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Always
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: 'true'
+
+BinPackArguments: 'false'
+BinPackParameters: 'false'
+
+AlwaysBreakTemplateDeclarations: Yes
+
+AlignAfterOpenBracket: AlwaysBreak
+AlignTrailingComments: 'true'
+
 SortIncludes: 'false'
 IndentWidth: 4
 IncludeBlocks: Regroup
