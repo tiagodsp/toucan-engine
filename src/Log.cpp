@@ -10,7 +10,7 @@ std::map<std::string, Ref<spdlog::logger>> Log::s_LoggerMap;
 
 void Log::Init()
 {
-    spdlog::set_pattern("%^[%T][%n]: %v%$");
+    spdlog::set_pattern("%^[%T][%n][%l]: %v%$");
 }
 
 Ref<spdlog::logger> Log::GetLogger(const std::string LogName)
