@@ -52,3 +52,6 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 else()
   message(FATAL_ERROR "Unsupported operating system")
 endif()
+
+include(3rdparty/bgfx.cmake)
+target_link_libraries(${PROJECT_NAME} bgfx)
