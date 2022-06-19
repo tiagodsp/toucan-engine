@@ -1,4 +1,5 @@
 #pragma once
+#include "CoreTypes.h"
 #include "Toucan.h"
 
 namespace Toucan
@@ -13,16 +14,13 @@ struct WindowInitializationParams
 
 class Window
 {
-  protected:
-    Window(WindowInitializationParams params);
-
   public:
-    void Update();
+    virtual void Update() = 0;
     static Ref<Window> Create(WindowInitializationParams params);
+    inline HANDLE GetNativeWindow() const { return m_NativeWindowHandle; }
 
-  private:
-    HANDLE m_WindowHandle;
-    HANDLE m_RendererHandle;
+  protected:
+    HANDLE m_NativeWindowHandle;
 };
 
 } // namespace Toucan

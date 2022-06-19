@@ -3,6 +3,7 @@
 #include "Core/Events/WindowEvents.h"
 #include "Core/Events/KeyEvents.h"
 #include "Core/Events/MouseEvents.h"
+#include "Renderer/Renderer.h"
 #include "Window.h"
 
 namespace Toucan
@@ -39,7 +40,9 @@ void App::Run()
             ((const MouseMotionEvent *)e)->GetPosition().y);
     });
 
+    Renderer::Get()->Init();
     while (!shouldTerminate) { m_Window->Update(); }
+    Renderer::Get()->Shutdown();
 }
 
 } // namespace Toucan

@@ -6,6 +6,8 @@ namespace Toucan
 
 template <typename T> using Scope = std::unique_ptr<T>;
 template <typename T> using Ref = std::shared_ptr<T>;
+template <typename T> using Weak = std::weak_ptr<T>;
+
 using HANDLE = void *;
 
 using String = std::string;
@@ -18,7 +20,7 @@ using Vector3Int = glm::ivec3;
 using Vector4Int = glm::ivec4;
 using Matrix4 = glm::mat4;
 using Quaternion = glm::quat;
-using Color = glm::vec4;
+using LinearColor = glm::vec4;
 using Rect = glm::vec4;
 using Size = glm::vec2;
 using Point = glm::vec2;
