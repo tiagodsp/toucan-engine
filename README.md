@@ -4,6 +4,11 @@
     <img src="res/toucanengine.svg" alt="drawing" width="100%" align="center"/>
 </p>
 
+<p align="center">
+    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/tiagodsp/toucan-engine?style=flat-square&logo=cplusplus">
+    <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/tiagodsp/toucan-engine/development?style=flat-square&logo=GitHub">
+</p>
+
 Toucan Engine is a game engine written in C++ for learning purposes. It is intended to be used as a learning tool for C++ developers that want to learn how to write a game engine. Still a work in progress.
 
 Some features of the engine will use already existing libraries to make the development faster and easier.
