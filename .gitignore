@@ -1,3 +1,6 @@
+# MacOS filesystem files
+.DS_Store
+
 # clangd files
 compile_commands.json
 .cache
