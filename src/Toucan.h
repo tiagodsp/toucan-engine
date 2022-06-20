@@ -12,5 +12,8 @@
 #include "Renderer/Renderer2D.h"
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/GraphicsContext.h"
+#include "Renderer/Shader.h"
+
+#include "Utils/FileManager.h"
 
 #include "Globals.h"
