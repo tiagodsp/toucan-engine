@@ -33,6 +33,9 @@ using Ref = std::shared_ptr<T>;
 template <typename T>
 using Weak = std::weak_ptr<T>;
 
+template <typename K, typename V>
+using Map = std::map<K, V>;
+
 using HANDLE = void *;
 
 using String = std::string;
