@@ -9,4 +9,6 @@ Ref<Renderer2D> Renderer2D::Get()
 }
 void Renderer2D::Init() {}
 void Renderer2D::Shutdown() {}
+
+void Renderer2D::DrawRect(const Rect &rect, const LinearColor &color) {}
 } // namespace Toucan

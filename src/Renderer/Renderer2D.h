@@ -25,7 +25,7 @@ class Renderer2D
     
     // void DrawLine(const Vector2 &from, const Vector2 &to, const Color &color);
 
-    // void DrawRect(const Rect &rect, const Color &color);
+    void DrawRect(const Rect &rect, const LinearColor &color);
 
     // void DrawCircle(const Vector2 &center, float radius, const Color &color);
 

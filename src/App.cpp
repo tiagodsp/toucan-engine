@@ -4,6 +4,7 @@
 #include "Core/Events/KeyEvents.h"
 #include "Core/Events/MouseEvents.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Shader.h"
 #include "Window.h"
 
 namespace Toucan
@@ -41,6 +42,8 @@ void App::Run()
     });
 
     Renderer::Get()->Init();
+    auto sl = new ShaderLibrary();
+    sl->Load("TestShader");
     while (!shouldTerminate) { m_Window->Update(); }
     Renderer::Get()->Shutdown();
 }
