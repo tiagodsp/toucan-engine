@@ -1,0 +1,1 @@
+add_subdirectory(ShaderConductor EXCLUDE_FROM_ALL)

@@ -7,3 +7,6 @@
 [submodule "3rdparty/bimg"]
 	path = 3rdparty/bimg
 	url = https://github.com/bkaradzic/bimg
+[submodule "3rdparty/ShaderConductor"]
+	path = 3rdparty/ShaderConductor
+	url = https://github.com/tiagodsp/ShaderConductor.git
