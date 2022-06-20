@@ -109,10 +109,10 @@ FileHandle *DarwinFileManager::OpenRead(const String &Filename, bool AllowWrite)
 {
     std::ios::openmode mode = std::ios::in;
     mode |= AllowWrite ? std::ios::out : std::ios::in;
-    HANDLE fileHandle = new std::fstream(Filename, mode);
-    if (fileHandle == nullptr)
+    auto fileHandle = new std::fstream(Filename, mode);
+    if (fileHandle->fail())
     {
-        CORE_LOGE("Failed to open file '%s'.", Filename.c_str());
+        CORE_LOGE("Failed to open file '{}'.", Filename.c_str());
         return nullptr;
     }
     return new DarwinFileHandle(fileHandle);
@@ -126,7 +126,7 @@ FileHandle *DarwinFileManager::OpenWrite(const String &Filename, bool Append, bo
     HANDLE fileHandle = new std::fstream(Filename, mode);
     if (fileHandle == nullptr)
     {
-        CORE_LOGE("Failed to open file '%s'.", Filename.c_str());
+        CORE_LOGE("Failed to open file '{}'.", Filename.c_str());
         return nullptr;
     }
     return new DarwinFileHandle(fileHandle);
@@ -201,7 +201,7 @@ bool DarwinFileManager::CreateDirectoryTree(const String &Directory)
         {
             if (!fs::create_directory(*it))
             {
-                CORE_LOGE("Failed to create directory '%s' trying to create directory tree '%s'.", *it, Directory);
+                CORE_LOGE("Failed to create directory '{}' trying to create directory tree '{}'.", *it, Directory);
                 return false;
             }
         }
@@ -226,7 +226,7 @@ bool DarwinFileManager::CopyFile(const String &From, const String &To)
         delete to;
         return true;
     }
-    CORE_LOGE("Failed to copy file '%s' to '%s'.", From, To);
+    CORE_LOGE("Failed to copy file '{}' to '{}'.", From, To);
     return false;
 }
 
@@ -235,7 +235,7 @@ bool DarwinFileManager::CopyDirectoryTree(
 {
     if (!CreateDirectoryTree(DestinationDirectory))
     {
-        CORE_LOGE("Failed to create directory tree '%s'.", DestinationDirectory);
+        CORE_LOGE("Failed to create directory tree '{}'.", DestinationDirectory);
         return false;
     }
     for (const auto &entry : fs::recursive_directory_iterator(Source))
@@ -247,14 +247,14 @@ bool DarwinFileManager::CopyDirectoryTree(
             {
                 if (!CopyFile(entry.path().string(), destination))
                 {
-                    CORE_LOGE("Failed to copy directory tree '%s' to '%s'.", Source, DestinationDirectory);
+                    CORE_LOGE("Failed to copy directory tree '{}' to '{}'.", Source, DestinationDirectory);
                     return false;
                 }
             }
             else
             {
                 CORE_LOGE(
-                    "Failed to copy directory tree '%s' to '%s' because file '%s' already exists.",
+                    "Failed to copy directory tree '{}' to '{}' because file '{}' already exists.",
                     Source,
                     DestinationDirectory,
                     destination);
