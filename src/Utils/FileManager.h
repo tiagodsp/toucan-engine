@@ -55,7 +55,7 @@ class FileHandle
 class FileManager
 {
   public:
-    static FileManager *Get();
+    static Ref<FileManager> Get();
 
     ~FileManager() {}
 
@@ -72,7 +72,7 @@ class FileManager
      * @param Filename  Filename to check.
      * @return The size of the file.
      */
-    virtual int64 FileSize(const String &Filename) = 0;
+    virtual uint64 FileSize(const String &Filename) = 0;
 
     /**
      * @brief Delete a file.

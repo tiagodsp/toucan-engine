@@ -22,10 +22,11 @@ class DarwinFileHandle : public FileHandle
 
 class DarwinFileManager : public FileManager
 {
+  public:
     ~DarwinFileManager() {}
 
     virtual bool FileExists(const String &Filename) override;
-    virtual int64 FileSize(const String &Filename) override;
+    virtual uint64 FileSize(const String &Filename) override;
     virtual bool DeleteFile(const String &Filename) override;
     virtual bool IsReadOnly(const String &Filename) override;
     virtual bool MoveFile(const String &From, const String &To) override;

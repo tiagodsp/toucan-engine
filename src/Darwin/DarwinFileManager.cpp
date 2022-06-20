@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <ios>
+#include <memory>
 
 namespace fs = std::filesystem;
 
@@ -29,12 +30,14 @@ bool DarwinFileHandle::Seek(int64 NewPosition)
 {
     auto handle = (std::fstream *)m_NativeFileHandle;
     handle->seekg(NewPosition);
+    return true;
 }
 
 bool DarwinFileHandle::SeekFromEnd(int64 NewPositionRelativeToEnd)
 {
     auto handle = (std::fstream *)m_NativeFileHandle;
     handle->seekg(NewPositionRelativeToEnd, std::ios_base::end);
+    return true;
 }
 
 uint64 DarwinFileHandle::Read(uint8 *Destination, uint64 BytesToRead)
@@ -65,25 +68,42 @@ bool DarwinFileHandle::Flush()
 
 // DarwinFileManager definitions -------------------------------------------------
 
-bool DarwinFileManager::FileExists(const String &Filename) { return fs::exists(Filename); }
+bool DarwinFileManager::FileExists(const String &Filename)
+{
+    return fs::exists(Filename);
+}
 
-int64 DarwinFileManager::FileSize(const String &Filename) { return fs::file_size(Filename); }
+uint64 DarwinFileManager::FileSize(const String &Filename)
+{
+    return fs::file_size(Filename);
+}
 
-bool DarwinFileManager::DeleteFile(const String &Filename) { return fs::remove(Filename); }
+bool DarwinFileManager::DeleteFile(const String &Filename)
+{
+    return fs::remove(Filename);
+}
 
 bool DarwinFileManager::IsReadOnly(const String &Filename)
 {
     return (fs::status(Filename).permissions() & fs::perms::owner_read) != fs::perms::none;
 }
 
-bool DarwinFileManager::MoveFile(const String &From, const String &To) { fs::rename(From, To); }
+bool DarwinFileManager::MoveFile(const String &From, const String &To)
+{
+    fs::rename(From, To);
+    return true;
+}
 
 bool DarwinFileManager::SetReadOnly(const String &Filename, bool NewReadOnlyValue)
 {
     fs::permissions(Filename, fs::perms::owner_read | (NewReadOnlyValue ? fs::perms::none : fs::perms::owner_write));
+    return true;
 }
 
-String DarwinFileManager::GetFilenameOnDisk(const String &Filename) { return fs::absolute(Filename).string(); }
+String DarwinFileManager::GetFilenameOnDisk(const String &Filename)
+{
+    return fs::absolute(Filename).string();
+}
 
 FileHandle *DarwinFileManager::OpenRead(const String &Filename, bool AllowWrite)
 {
@@ -112,11 +132,20 @@ FileHandle *DarwinFileManager::OpenWrite(const String &Filename, bool Append, bo
     return new DarwinFileHandle(fileHandle);
 }
 
-bool DarwinFileManager::DirectoryExists(const String &Directory) { return fs::is_directory(Directory); }
+bool DarwinFileManager::DirectoryExists(const String &Directory)
+{
+    return fs::is_directory(Directory);
+}
 
-bool DarwinFileManager::CreateDirectory(const String &Directory) { fs::create_directory(Directory); }
+bool DarwinFileManager::CreateDirectory(const String &Directory)
+{
+    return fs::create_directory(Directory);
+}
 
-bool DarwinFileManager::DeleteDirectory(const String &Directory) { fs::remove_all(Directory); }
+bool DarwinFileManager::DeleteDirectory(const String &Directory)
+{
+    return fs::remove_all(Directory);
+}
 
 void DarwinFileManager::FindFiles(std::vector<String> &FoundFiles, const String &Directory, const String &FileExtension)
 {
@@ -234,5 +263,11 @@ bool DarwinFileManager::CopyDirectoryTree(
         }
     }
     return true;
+}
+
+Ref<FileManager> FileManager::Get()
+{
+    static Ref<FileManager> instance = std::make_shared<DarwinFileManager>();
+    return instance;
 }
 } // namespace Toucan
