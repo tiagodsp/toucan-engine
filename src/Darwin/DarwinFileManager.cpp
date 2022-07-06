@@ -120,11 +120,11 @@ FileHandle *DarwinFileManager::OpenRead(const String &Filename, bool AllowWrite)
 
 FileHandle *DarwinFileManager::OpenWrite(const String &Filename, bool Append, bool AllowRead)
 {
-    std::ios::openmode mode = std::ios::out;
+    std::ios::openmode mode = std::fstream::out;
     mode |= Append ? std::ios::app : std::ios::trunc;
     mode |= AllowRead ? std::ios::in : std::ios::out;
-    HANDLE fileHandle = new std::fstream(Filename, mode);
-    if (fileHandle == nullptr)
+    auto fileHandle = new std::fstream(Filename, mode);
+    if (fileHandle->fail())
     {
         CORE_LOGE("Failed to open file '{}'.", Filename.c_str());
         return nullptr;
