@@ -125,6 +125,13 @@ add_custom_target(
   ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_CURRENT_LIST_DIR}
 )
 
+# Copy assets to build directory
+add_custom_target(
+  copy_assets ALL
+  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Assets/ ${CMAKE_CURRENT_BINARY_DIR}/Assets/
+  WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+)
+
 file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE PCHEADERS src/*.PCH.h)
 add_executable(${PROJECT_NAME} ${SOURCES})
