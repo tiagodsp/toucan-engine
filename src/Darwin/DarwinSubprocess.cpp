@@ -32,16 +32,16 @@ Subprocess::Result DarwinSubprocess::Run(
     }
 
     // build command string
-    std::string cmd = Cmd;
+    std::string cmdStr = Cmd;
     for (auto &arg : Args)
     {
-        cmd += " " + arg;
+        cmdStr += " " + arg;
     }
 
-    FILE *p = popen(Cmd.c_str(), "r");
+    FILE *p = popen(cmdStr.c_str(), "r");
     if (p == nullptr)
     {
-        CORE_LOGF("Failed to open process: {}", Cmd);
+        CORE_LOGF("Failed to open process: {}", cmdStr);
         return Subprocess::Result{-1, {}};
     }
     uint8 buff[1024];
@@ -54,7 +54,7 @@ Subprocess::Result DarwinSubprocess::Run(
     close(cwd);
     if (status == -1)
     {
-        CORE_LOGF("Failed to close process: {}", Cmd);
+        CORE_LOGF("Failed to close process: {}", cmdStr);
         return Subprocess::Result{-1, {}};
     }
     return Subprocess::Result{status, output};
