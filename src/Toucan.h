@@ -16,5 +16,6 @@
 #include "Renderer/Shader.h"
 
 #include "Utils/FileManager.h"
+#include "Utils/Path.h"
 
 #include "Globals.h"

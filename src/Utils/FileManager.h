@@ -38,18 +38,32 @@ class FileHandle
     virtual uint64 Read(uint8 *Destination, uint64 BytesToRead) = 0;
 
     /**
+     * Read all bytes from the file.
+     *
+     * @param Destination   Buffer to holds the result, should be at least BytesToRead in size.
+     * @return uint64       Number of bytes read.
+     */
+    virtual uint64 ReadAll(uint8 *Destination) = 0;
+
+    /**
      * Write bytes to the file.
      * @param Source        Buffer to writen, should be at least BytesToWrite in size.
      * @param BytesToRead   Number of bytes to read into the destination.
      * @return	            true if the operation completed successfully.
-     **/
+     */
     virtual bool Write(const uint8 *Source, int64 BytesToWrite) = 0;
 
     /**
      * Flushes the file handle to disk.
      * @return  true if the operation completed successfully.
-     **/
+     */
     virtual bool Flush() = 0;
+
+    /**
+     * Get size of the file in bytes.
+     * @return Size of the file in bytes.
+     */
+    virtual uint64 Size() = 0;
 };
 
 class FileManager
