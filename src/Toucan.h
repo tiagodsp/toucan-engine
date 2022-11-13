@@ -3,6 +3,7 @@
 #include "toucanengine.PCH.h"
 
 #include "CoreTypes.h"
+#include "Macros.h"
 #include "Core/Reflection/Reflection.h"
 #include "Log.h"
 #include "Window.h"

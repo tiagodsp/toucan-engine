@@ -26,7 +26,7 @@ class Log
 #define CORE_LOGD(...) Toucan::Log::GetLogger("Core")->debug(__VA_ARGS__)
 #define CORE_LOGT(...) Toucan::Log::GetLogger("Core")->trace(__VA_ARGS__)
 
-#define LOG(LogName, ...) Toucan::Log::GetLogger(#LogName)->log(__VA_ARGS__)
+#define LOG(LogName, Level, ...) Toucan::Log::GetLogger(#LogName)->log(spdlog::level::Level, __VA_ARGS__)
 #define LOGI(LogName, ...) Toucan::Log::GetLogger(#LogName)->info(__VA_ARGS__)
 #define LOGW(LogName, ...) Toucan::Log::GetLogger(#LogName)->warn(__VA_ARGS__)
 #define LOGE(LogName, ...) Toucan::Log::GetLogger(#LogName)->error(__VA_ARGS__)
