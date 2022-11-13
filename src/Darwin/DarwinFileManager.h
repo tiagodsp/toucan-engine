@@ -16,8 +16,10 @@ class DarwinFileHandle : public FileHandle
     virtual bool Seek(int64 NewPosition) override;
     virtual bool SeekFromEnd(int64 NewPositionRelativeToEnd) override;
     virtual uint64 Read(uint8 *Destination, uint64 BytesToRead) override;
+    virtual uint64 ReadAll(uint8 *Destination) override;
     virtual bool Write(const uint8 *Source, int64 BytesToWrite) override;
     virtual bool Flush() override;
+    virtual uint64 Size() override;
 };
 
 class DarwinFileManager : public FileManager

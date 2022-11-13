@@ -1,4 +1,5 @@
 #include "DarwinFileManager.h"
+#include "CoreTypes.h"
 #include "Log.h"
 #include "Utils/FileManager.h"
 #include <filesystem>
@@ -47,6 +48,16 @@ uint64 DarwinFileHandle::Read(uint8 *Destination, uint64 BytesToRead)
     return handle->gcount();
 }
 
+uint64 DarwinFileHandle::ReadAll(uint8 *Destination)
+{
+    auto handle = (std::fstream *)m_NativeFileHandle;
+    handle->seekg(0, handle->end);
+    int64 size = handle->tellg();
+    handle->seekg(0, handle->beg);
+    handle->read((char *)Destination, size);
+    return handle->gcount();
+}
+
 bool DarwinFileHandle::Write(const uint8 *Source, int64 BytesToWrite)
 {
     auto handle = (std::fstream *)m_NativeFileHandle;
@@ -64,6 +75,15 @@ bool DarwinFileHandle::Flush()
     auto handle = (std::fstream *)m_NativeFileHandle;
     handle->flush();
     return handle->good();
+}
+
+uint64 DarwinFileHandle::Size()
+{
+    auto handle = (std::fstream *)m_NativeFileHandle;
+    handle->seekg(0, handle->end);
+    uint64 size = handle->tellg();
+    handle->seekg(0, handle->beg);
+    return size;
 }
 
 // DarwinFileManager definitions -------------------------------------------------
