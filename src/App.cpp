@@ -3,9 +3,11 @@
 #include "Core/Events/WindowEvents.h"
 #include "Core/Events/KeyEvents.h"
 #include "Core/Events/MouseEvents.h"
+#include "Log.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
 #include "Window.h"
+#include "Utils/Path.h"
 
 namespace Toucan
 {
@@ -41,10 +43,17 @@ void App::Run()
             ((const MouseMotionEvent *)e)->GetPosition().y);
     });
 
+    CORE_LOGI("GameDir: {}", Path::ExecutableDir());
+
     Renderer::Get()->Init();
-    auto sl = new ShaderLibrary();
-    sl->Load("TestShader");
-    while (!shouldTerminate) { m_Window->Update(); }
+
+    // auto sl = new ShaderLibrary();
+    // sl->Load("Color");
+    
+    while (!shouldTerminate)
+    {
+        m_Window->Update();
+    }
     Renderer::Get()->Shutdown();
 }
 

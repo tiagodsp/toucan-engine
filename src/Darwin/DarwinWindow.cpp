@@ -96,7 +96,7 @@ void DarwinWindow::Update()
     }
     
     // TODO - Just to test the renderer. Remove this later.
-    Renderer::Get()->Clear(LinearColor(0.2f, 0.2f, 0.2f, 1.0f));
+    Renderer::Get()->Clear(LinearColor(1.0f, 0.2f, 0.2f, 1.0f));
 }
 
 Ref<Window> Window::Create(WindowInitializationParams params)
