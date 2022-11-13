@@ -127,8 +127,8 @@ add_custom_target(
 
 # Copy assets to build directory
 add_custom_target(
-  copy_assets ALL
-  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Assets/ ${CMAKE_CURRENT_BINARY_DIR}/Assets/
+  copy_data ALL
+  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR}/data/
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
@@ -138,6 +138,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 target_precompile_headers(${PROJECT_NAME} PUBLIC ${PCHEADERS})
+add_dependencies(${PROJECT_NAME} copy_data)
+
 
 # check operating system in CMAKE_SYSTEM_NAME and set defines
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
