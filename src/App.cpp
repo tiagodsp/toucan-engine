@@ -47,8 +47,8 @@ void App::Run()
 
     Renderer::Get()->Init();
 
-    // auto sl = new ShaderLibrary();
-    // sl->Load("Color");
+    auto sl = ShaderLibrary::Create("Default");
+    sl->Load("Color");
     
     while (!shouldTerminate)
     {
