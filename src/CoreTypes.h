@@ -36,6 +36,9 @@ using Weak = std::weak_ptr<T>;
 template <typename K, typename V>
 using Map = std::map<K, V>;
 
+template <typename T>
+using Array = std::vector<T>;
+
 using HANDLE = void *;
 
 using String = std::string;
