@@ -20,6 +20,10 @@ class BgfxGraphicsAPI : public GraphicsAPI
 
     virtual void SetClearColor(const LinearColor &color) override;
     virtual void Clear() override;
+
+    virtual void Submit(const Ref<Shader>& ShaderProgram) override;
+
+    virtual void DrawIndexed() override;
 };
 
 } // namespace Toucan

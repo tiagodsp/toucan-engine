@@ -64,10 +64,30 @@ void BgfxGraphicsAPI::SetClearColor(const LinearColor &color)
 
 void BgfxGraphicsAPI::Clear()
 {
-    // Set view rect called here for testing purposes.
     bgfx::setViewRect(0, 0, 0, uint32_t(800), uint32_t(600));
     bgfx::touch(0);
-    bgfx::frame();
+}
+
+void BgfxGraphicsAPI::Submit(const Ref<Shader>& ShaderProgram)
+{
+    // submit and draw the shader program
+    uint64_t state = 0
+				| BGFX_STATE_WRITE_R
+				| BGFX_STATE_WRITE_G
+				| BGFX_STATE_WRITE_B
+				| BGFX_STATE_WRITE_A
+				| BGFX_STATE_WRITE_Z
+				| BGFX_STATE_DEPTH_TEST_LESS
+				| BGFX_STATE_CULL_CW
+				| BGFX_STATE_MSAA;
+
+    bgfx::setState(state);
+    bgfx::submit(0, *static_cast<bgfx::ProgramHandle*>(ShaderProgram->GetNativeHandle()));
+    bgfx::frame(); // TODO - this should be called in EndScene()
+}
+
+void BgfxGraphicsAPI::DrawIndexed()
+{
 }
 
 } // namespace Toucan

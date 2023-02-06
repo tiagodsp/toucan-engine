@@ -3,6 +3,9 @@
 
 namespace Toucan
 {
+
+class Shader;
+
 class GraphicsAPI
 {
   public:
@@ -37,6 +40,10 @@ class GraphicsAPI
     virtual void Clear() = 0;
     /** Get the name of the graphics API. */
     const EAPIName GetAPIName() const { return m_APIName; }
+    /** Submit program to rendering */
+    virtual void Submit(const Ref<Shader>& ShaderProgram) = 0;
+    /** Draw primitives */
+    virtual void DrawIndexed() = 0;
 
   protected:
     /** Set graphics api name. Only called by subclasses. */

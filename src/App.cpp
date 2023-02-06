@@ -46,9 +46,7 @@ void App::Run()
     CORE_LOGI("GameDir: {}", Path::ExecutableDir());
 
     Renderer::Get()->Init();
-
-    auto sl = ShaderLibrary::Create("Default");
-    sl->Load("Color");
+    Renderer::Get()->SetClearState({0.2f, 0.2f, 0.2f, 1.0f});
     
     while (!shouldTerminate)
     {

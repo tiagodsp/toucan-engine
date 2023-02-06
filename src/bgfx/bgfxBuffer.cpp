@@ -79,7 +79,10 @@ void BgfxVertexBuffer::SetData(void *Data, uint32 Size)
         default:
             break;
         }
+
+        layout.add(attrib, NumComponents, Type, element.IsNormalized, false);
     }
+    layout.end();
 
     m_Handle = bgfx::createVertexBuffer(bgfx::makeRef(Data, Size), layout).idx;
 }
@@ -96,7 +99,8 @@ void BgfxIndexBuffer::Unbind()
 
 void BgfxIndexBuffer::SetData(void *Data, uint32 Size)
 {
-    m_Handle = bgfx::createIndexBuffer(bgfx::makeRef(Data, Size), BGFX_BUFFER_COMPUTE_READ | BGFX_BUFFER_INDEX32).idx;
+    m_Size = Size;
+    m_Handle = bgfx::createIndexBuffer(bgfx::makeRef(Data, m_Size * sizeof(int)), BGFX_BUFFER_COMPUTE_READ | BGFX_BUFFER_INDEX32).idx;
 }
 
 } // namespace Toucan

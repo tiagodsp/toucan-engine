@@ -37,5 +37,11 @@ class Renderer
      * @param color The color to clear the screen with
      */
     void Clear(const LinearColor &color);
+
+    /**
+     * @brief Set clear state
+     * @param color The color to clear the screen with
+     */
+     void SetClearState(const LinearColor &color);
 };
 } // namespace Toucan

@@ -32,6 +32,14 @@ Ref<Shader> ShaderLibrary::GetShader(const String &name)
 
 Ref<ShaderLibrary> ShaderLibrary::Create(const String &name)
 {
+    // Check if the library already exists
+    if(s_ShaderLibraries.find(name) != s_ShaderLibraries.end())
+    {
+        // Return the existing library
+        return s_ShaderLibraries[name];
+    }
+    
+    // Create a new library
     Ref<ShaderLibrary> shaderLibrary = std::make_shared<ShaderLibrary>();
     s_ShaderLibraries[name] = shaderLibrary;
     return shaderLibrary;

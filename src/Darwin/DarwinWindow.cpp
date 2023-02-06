@@ -1,5 +1,6 @@
-#include "Renderer/Renderer.h"
+#pragma once
 #ifdef BUILD_DARWIN
+#include "Toucan.h"
 #include "DarwinWindow.h"
 #include "Log.h"
 #include "Renderer/GraphicsAPI.h"
@@ -96,7 +97,8 @@ void DarwinWindow::Update()
     }
     
     // TODO - Just to test the renderer. Remove this later.
-    Renderer::Get()->Clear(LinearColor(1.0f, 0.2f, 0.2f, 1.0f));
+    Renderer::Get()->Clear(LinearColor(0.2f, 0.2f, 0.2f, 1.0f));
+    Renderer2D::Get()->DrawRect(Rect(10), LinearColor(0.2f, 0.2f, 1.0f, 1.0f));
 }
 
 Ref<Window> Window::Create(WindowInitializationParams params)

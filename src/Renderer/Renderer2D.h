@@ -1,11 +1,17 @@
 #pragma once
 #include "Toucan.h"
-#include "bgfx/bgfx.h"
 
 namespace Toucan
 {
+
+class VertexBuffer;
+class IndexBuffer;
+
 class Renderer2D
 {
+  Ref<VertexBuffer> m_VertexBuffer;
+  Ref<IndexBuffer> m_IndexBuffer;
+
   public:
     /**
      * @brief Get the instance of the renderer

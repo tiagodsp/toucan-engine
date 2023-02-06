@@ -10,6 +10,7 @@
 #include "App.h"
 #include "Events.h"
 
+#include "Renderer/Renderer.h"
 #include "Renderer/Renderer2D.h"
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/GraphicsContext.h"

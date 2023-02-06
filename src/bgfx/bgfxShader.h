@@ -1,6 +1,6 @@
 #pragma once
 #include "Toucan.h"
-#include <vector>
+#include "bgfx/bgfx.h"
 
 namespace Toucan
 {

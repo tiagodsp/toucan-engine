@@ -29,8 +29,12 @@ void Renderer::End() { GraphicsAPI::Get()->EndScene(); }
 
 void Renderer::Clear(const LinearColor &color)
 {
-    GraphicsAPI::Get()->SetClearColor(color);
     GraphicsAPI::Get()->Clear();
+}
+
+void Renderer::SetClearState(const LinearColor &color)
+{
+    GraphicsAPI::Get()->SetClearColor(color);
 }
 
 } // namespace Toucan

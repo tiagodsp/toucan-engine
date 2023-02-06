@@ -140,7 +140,7 @@ class VertexBuffer : public Buffer
      * @param Size Size in bytes of the vertex array.
      * @return Reference to the created VertexBuffer.
      */
-    static Ref<VertexBuffer> Create(void *Vertices, uint32 Size);
+    static Ref<VertexBuffer> Create(void *Vertices, uint32 Size, const BufferLayout &Layout);
 };
 
 class IndexBuffer : public Buffer
