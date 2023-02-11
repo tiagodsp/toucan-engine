@@ -9,6 +9,8 @@
 #include "Window.h"
 #include "App.h"
 #include "Events.h"
+#include "Layer.h"
+#include "LayerStack.h"
 
 #include "Renderer/Renderer.h"
 #include "Renderer/Renderer2D.h"

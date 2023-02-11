@@ -1,5 +1,4 @@
 #pragma once
-#include "CoreTypes.h"
 #include "Toucan.h"
 
 namespace Toucan
@@ -12,10 +11,18 @@ struct WindowInitializationParams
     glm::vec<2, int> InitialPosition{0, 0};
 };
 
+class Event;
+
 class Window
 {
+    using EventCallbackFn = std::function<void(Event *)>;
+
+  protected:
+    EventCallbackFn m_EventCallback;
+
   public:
     virtual void Update() = 0;
+    void SetEventCallback(const EventCallbackFn &callback) { m_EventCallback = callback; }
     static Ref<Window> Create(WindowInitializationParams params);
     inline HANDLE GetNativeWindow() const { return m_NativeWindowHandle; }
 

@@ -72,33 +72,51 @@ DarwinWindow::DarwinWindow(WindowInitializationParams params)
 
 void DarwinWindow::Update()
 {
+    PollEvents();
+
+    // TODO - Just to test the renderer. Remove this later.
+    Renderer::Get()->Clear(LinearColor(0.2f, 0.2f, 0.2f, 1.0f));
+    Renderer2D::Get()->DrawRect(Rect(10), LinearColor(0.2f, 0.2f, 1.0f, 1.0f));
+}
+
+void DarwinWindow::PollEvents()
+{
     // Get an event
     SDL_Event event;
     SDL_PollEvent(&event);
 
     // Handle the event
-    if (event.type == SDL_QUIT) { EventDispatcher::Get().Dispatch(new WindowCloseEvent()); }
-    if (event.type == SDL_KEYDOWN) { EventDispatcher::Get().Dispatch(new KeyPressedEvent(event.key.keysym.sym)); }
-    if (event.type == SDL_KEYUP) { EventDispatcher::Get().Dispatch(new KeyReleasedEvent(event.key.keysym.sym)); }
+    if (event.type == SDL_QUIT)
+    {
+        m_EventCallback(new WindowCloseEvent());
+    }
+    if (event.type == SDL_KEYDOWN)
+    {
+        m_EventCallback(new KeyPressedEvent(event.key.keysym.sym));
+    }
+    if (event.type == SDL_KEYUP)
+    {
+        m_EventCallback(new KeyReleasedEvent(event.key.keysym.sym));
+    }
     if (event.type == SDL_MOUSEBUTTONDOWN)
     {
-        EventDispatcher::Get().Dispatch(
-            new MouseKeyPressedEvent({event.button.x, event.button.y}, event.button.button));
+        m_EventCallback(new MouseKeyPressedEvent({event.button.x, event.button.y}, event.button.button));
     }
     if (event.type == SDL_MOUSEBUTTONUP)
     {
-        EventDispatcher::Get().Dispatch(
-            new MouseKeyReleasedEvent({event.button.x, event.button.y}, event.button.button));
+        m_EventCallback(new MouseKeyReleasedEvent({event.button.x, event.button.y}, event.button.button));
     }
     if (event.type == SDL_MOUSEMOTION)
     {
-        EventDispatcher::Get().Dispatch(
-            new MouseMotionEvent({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel}));
+        m_EventCallback(new MouseMotionEvent({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel}));
     }
-    
-    // TODO - Just to test the renderer. Remove this later.
-    Renderer::Get()->Clear(LinearColor(0.2f, 0.2f, 0.2f, 1.0f));
-    Renderer2D::Get()->DrawRect(Rect(10), LinearColor(0.2f, 0.2f, 1.0f, 1.0f));
+    if (event.type == SDL_WINDOWEVENT)
+    {
+        if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+        {
+            m_EventCallback(new WindowResizeEvent({(uint32)event.window.data1, (uint32)event.window.data2}));
+        }
+    }
 }
 
 Ref<Window> Window::Create(WindowInitializationParams params)
