@@ -18,3 +18,7 @@ build/
 *.dll
 *.exe
 *.lib
+
+# generated directories and files
+generated/
+*.gen.*

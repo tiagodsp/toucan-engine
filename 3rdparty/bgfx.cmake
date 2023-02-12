@@ -48,23 +48,23 @@ add_custom_target(
 )
 
 #bgfx
-add_library(bgfx STATIC IMPORTED GLOBAL)
+add_library(bgfx STATIC IMPORTED)
 target_include_directories(bgfx INTERFACE ${CMAKE_CURRENT_LIST_DIR}/bgfx/include)
 set_target_properties(bgfx PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbgfx${CMAKE_BUILD_TYPE}.a)
 add_dependencies(bgfx bgfx_build)
 
 #shaderc
-add_executable(shaderc IMPORTED GLOBAL)
+add_executable(shaderc IMPORTED)
 set_target_properties(shaderc PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/shaderc${CMAKE_BUILD_TYPE})
 add_dependencies(shaderc bgfx_build)
 
 #bimg
-add_library(bimg STATIC IMPORTED GLOBAL)
+add_library(bimg STATIC IMPORTED)
 target_include_directories(bimg INTERFACE ${CMAKE_CURRENT_LIST_DIR}/bimg/include)
 set_target_properties(bimg PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbimg${CMAKE_BUILD_TYPE}.a)
 
 #bx
-add_library(bx STATIC IMPORTED GLOBAL)
+add_library(bx STATIC IMPORTED)
 target_include_directories(bx INTERFACE ${CMAKE_CURRENT_LIST_DIR}/bx/include)
 set_target_properties(bx PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbx${CMAKE_BUILD_TYPE}.a)
 

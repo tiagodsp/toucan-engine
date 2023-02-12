@@ -72,6 +72,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
         # -fms-compatibility
         # -fdiagnostics-show-template-tree
         # -fdelayed-template-parsing
+        -fvisibility=hidden
         -Wno-unused-parameter
         -Wno-unused-variable
         -Wno-documentation
@@ -132,25 +133,47 @@ add_custom_target(
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
-file(GLOB_RECURSE PCHEADERS src/*.PCH.h)
-add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
-target_precompile_headers(${PROJECT_NAME} PUBLIC ${PCHEADERS})
-add_dependencies(${PROJECT_NAME} copy_data)
 
+# Toucan ---------------------------------------------------------------
+file(GLOB_RECURSE SOURCES core/*.cpp)
+file(GLOB_RECURSE PCHEADERS core/*.PCH.h)
+add_library(${PROJECT_NAME}_core SHARED ${SOURCES})
+target_link_libraries(${PROJECT_NAME}_core PRIVATE ${CONAN_LIBS})
+target_include_directories(${PROJECT_NAME}_core PUBLIC ${CMAKE_CURRENT_LIST_DIR}/core)
+target_precompile_headers(${PROJECT_NAME}_core PRIVATE ${PCHEADERS})
+add_dependencies(${PROJECT_NAME}_core copy_data)
+
+add_subdirectory(3rdparty)
+target_link_libraries(${PROJECT_NAME}_core PRIVATE thirdparty_libs)
+
+# Generate api.h
+# set MODULE_NAME_UPPER as uppercase of <module_name>
+string(TOUPPER core MODULE_NAME_UPPER)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/templates/api.h.in ${CMAKE_CURRENT_LIST_DIR}/generated/core/core.api.gen.h)
+target_include_directories(${PROJECT_NAME}_core PUBLIC ${CMAKE_CURRENT_LIST_DIR}/generated/core)
+target_compile_definitions(${PROJECT_NAME}_core PRIVATE ${MODULE_NAME_UPPER}_BUILD_SHARED)
+
+# Editor ---------------------------------------------------------------
+file(GLOB_RECURSE SOURCES editor/*.cpp)
+file(GLOB_RECURSE PCHEADERS editor/*.PCH.h)
+add_executable(${PROJECT_NAME}_editor ${SOURCES})
+target_include_directories(${PROJECT_NAME}_editor PUBLIC ${CMAKE_CURRENT_LIST_DIR}/editor)
+target_precompile_headers(${PROJECT_NAME}_editor PUBLIC ${PCHEADERS})
+add_dependencies(${PROJECT_NAME}_editor ${PROJECT_NAME}_core)
+target_link_libraries(${PROJECT_NAME}_editor PRIVATE ${PROJECT_NAME}_core)
+
+string(TOUPPER editor MODULE_NAME_UPPER)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/templates/api.h.in ${CMAKE_CURRENT_LIST_DIR}/generated/editor/editor.api.gen.h)
+target_include_directories(${PROJECT_NAME}_editor PUBLIC ${CMAKE_CURRENT_LIST_DIR}/generated/editor)
+target_compile_definitions(${PROJECT_NAME}_editor PRIVATE ${MODULE_NAME_UPPER}_BUILD_SHARED)
 
 # check operating system in CMAKE_SYSTEM_NAME and set defines
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  target_compile_definitions(${PROJECT_NAME} PUBLIC BUILD_WINDOWS)
+  add_compile_definitions(BUILD_WINDOWS)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  target_compile_definitions(${PROJECT_NAME} PUBLIC BUILD_LINUX)
+  add_compile_definitions(BUILD_LINUX)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-  target_compile_definitions(${PROJECT_NAME} PUBLIC BUILD_DARWIN)
+  add_compile_definitions(BUILD_DARWIN)
 else()
   message(FATAL_ERROR "Unsupported operating system")
 endif()
-
-add_subdirectory(3rdparty)
-target_link_libraries(${PROJECT_NAME} thirdparty_libs)
