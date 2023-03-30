@@ -18,6 +18,8 @@
 #include "Renderer/GraphicsContext.h"
 #include "Renderer/Shader.h"
 
+#include "ImGui/ImGuiLayer.h"
+
 #include "Utils/FileManager.h"
 #include "Utils/Path.h"
 

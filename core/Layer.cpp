@@ -1,5 +1,4 @@
 #include "Layer.h"
-#include "App.h"
 
 namespace Toucan {
 

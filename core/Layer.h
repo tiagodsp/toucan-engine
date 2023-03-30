@@ -1,7 +1,10 @@
 #pragma once
-#include "Toucan.h"
+#include "CoreTypes.h"
 
 namespace Toucan {
+
+class Event;
+
 class CORE_API Layer {
 private:
     String m_Name;
