@@ -1,5 +1,6 @@
 #pragma once
 #include "toucanengine.PCH.h"
+#include "Macros.h"
 
 // primitive types
 #ifndef __GNUG__
@@ -23,6 +24,7 @@ typedef uint8_t uint8;
 typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
+
 namespace Toucan
 {
 
@@ -58,3 +60,5 @@ using Point = glm::vec2;
 using Range = glm::vec2;
 
 } // namespace Toucan
+
+#include "Log.h"

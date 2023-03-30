@@ -1,5 +1,4 @@
 #pragma once
-#include "Toucan.h"
 #include "Core/Reflection/Type.h"
 
 namespace Toucan

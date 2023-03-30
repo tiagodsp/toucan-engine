@@ -1,6 +1,6 @@
 #pragma once
-#include "Toucan.h"
-#include "glm/fwd.hpp"
+#include "CoreTypes.h"
+#include "Events.h"
 
 namespace Toucan
 {

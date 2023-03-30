@@ -1,6 +1,5 @@
 #pragma once
 #include "Events.h"
-#include "Toucan.h"
 
 namespace Toucan
 {

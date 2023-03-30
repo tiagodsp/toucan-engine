@@ -1,5 +1,5 @@
 #pragma once
-#include "Toucan.h"
+#include "Renderer/Shader.h"
 #include "bgfx/bgfx.h"
 
 namespace Toucan

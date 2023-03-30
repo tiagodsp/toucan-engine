@@ -1,7 +1,13 @@
 #include "App.h"
+
 #include "Core/Events/WindowEvents.h"
 #include "Core/Events/KeyEvents.h"
 #include "Core/Events/MouseEvents.h"
+
+#include "Renderer/Renderer.h"
+#include "Utils/Path.h"
+#include "Window.h"
+
 #include "glm/fwd.hpp"
 
 namespace Toucan

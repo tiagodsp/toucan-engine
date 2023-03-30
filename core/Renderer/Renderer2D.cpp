@@ -1,6 +1,10 @@
 #include "Renderer2D.h"
+
 #include "Globals.h"
+
 #include "Renderer/Buffer.h"
+#include "Renderer/Shader.h"
+#include "Renderer/GraphicsAPI.h"
 
 namespace Toucan
 {

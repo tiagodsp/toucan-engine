@@ -1,9 +1,8 @@
 #pragma once
-#include "Log.h"
-#include "Toucan.h"
-#include <cstddef>
-#include <cstdlib>
-#include <type_traits>
+
+#include "CoreTypes.h"
+
+#include "Core/Reflection/Reflection.h"
 
 namespace Toucan
 {

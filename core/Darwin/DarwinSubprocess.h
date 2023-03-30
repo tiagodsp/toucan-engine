@@ -1,5 +1,4 @@
 #pragma once
-#include "Toucan.h"
 #include "Utils/Subprocess.h"
 
 namespace Toucan

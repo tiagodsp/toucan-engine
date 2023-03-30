@@ -1,5 +1,6 @@
 #pragma once
-#include "Toucan.h"
+#include "CoreTypes.h"
+#include "Window.h"
 
 union SDL_Event;
 

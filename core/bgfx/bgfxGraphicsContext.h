@@ -1,5 +1,8 @@
 #pragma once
-#include "Toucan.h"
+#include "CoreTypes.h"
+
+#include "Renderer/GraphicsContext.h"
+
 #include "bgfx/bgfx.h"
 
 namespace Toucan

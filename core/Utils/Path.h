@@ -1,9 +1,5 @@
 #pragma once
-#include "Toucan.h"
-#include <initializer_list>
-#include <string>
-#include <string_view>
-#include <tuple>
+#include "CoreTypes.h"
 
 namespace Toucan
 {
