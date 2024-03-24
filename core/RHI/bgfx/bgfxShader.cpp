@@ -8,6 +8,7 @@
 #include "bgfx/bgfx.h"
 #include <cstdlib>
 #include <vector>
+#include "RHI/RHI_GraphicsAPI.h"
 
 namespace Toucan
 {
@@ -35,21 +36,21 @@ bool BgfxShader::Compile()
     LOGI(BgfxShader, "Compiling shader: {}", m_Name);
 
     String profile;
-    switch (GraphicsAPI::Get()->GetAPIName())
+    switch (RHI_GraphicsAPI::Get()->GetAPIName())
     {
-    case GraphicsAPI::EAPIName::API_OpenGL:
+    case RHI_GraphicsAPI::EAPIName::API_OpenGL:
         profile = "440";
         break;
-    case GraphicsAPI::EAPIName::API_Direct3D11:
+    case RHI_GraphicsAPI::EAPIName::API_Direct3D11:
         profile = "s_5_0";
         break;
-    case GraphicsAPI::EAPIName::API_Direct3D12:
+    case RHI_GraphicsAPI::EAPIName::API_Direct3D12:
         profile = "s_5_0";
         break;
-    case GraphicsAPI::EAPIName::API_Vulkan:
+    case RHI_GraphicsAPI::EAPIName::API_Vulkan:
         profile = "spirv";
         break;
-    case GraphicsAPI::EAPIName::API_Metal:
+    case RHI_GraphicsAPI::EAPIName::API_Metal:
         profile = "metal";
         break;
     default:

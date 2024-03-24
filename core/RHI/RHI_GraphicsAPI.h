@@ -5,8 +5,11 @@ namespace Toucan
 {
 
 class Shader;
+class RHI_VertexBuffer;
+class RHI_IndexBuffer;
+class BufferLayout;
 
-class CORE_API GraphicsAPI
+class CORE_API RHI_GraphicsAPI
 {
   public:
     enum EAPIName
@@ -24,10 +27,10 @@ class CORE_API GraphicsAPI
 
   public:
     /** Get the graphics API. */
-    static Ref<GraphicsAPI> Get();
+    static Ref<RHI_GraphicsAPI> Get();
     
     /** Initialize the graphics API. */
-    virtual void Init() = 0;
+    virtual void Initialize() = 0;
     /** Shutdown the graphics API. */
     virtual void Shutdown() = 0;
     /** Begin a new scene. */
@@ -44,8 +47,17 @@ class CORE_API GraphicsAPI
     const EAPIName GetAPIName() const { return m_APIName; }
     /** Submit program to rendering */
     virtual void Submit(const Ref<Shader>& ShaderProgram) = 0;
+    /** Set the vertex buffer */
+    virtual void SetVertexBuffer(const Ref<RHI_VertexBuffer>& VertexBuffer) = 0;
+    /** Set the index buffer */
+    virtual void SetIndexBuffer(const Ref<RHI_IndexBuffer>& IndexBuffer) = 0;
     /** Draw primitives */
     virtual void DrawIndexed() = 0;
+
+    /** Create a vertex buffer */
+    virtual Ref<RHI_VertexBuffer> CreateVertexBuffer(void *Vertices, uint32 Size, const BufferLayout &Layout) = 0;
+    /** Create an index buffer */
+    virtual Ref<RHI_IndexBuffer> CreateIndexBuffer(void *Indexes, uint32 Count) = 0;
 
   protected:
     /** Set graphics api name. Only called by subclasses. */

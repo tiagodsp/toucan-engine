@@ -3,7 +3,7 @@
 #include "Toucan.h"
 #include "DarwinWindow.h"
 #include "Log.h"
-#include "Renderer/GraphicsAPI.h"
+#include "RHI/RHI_GraphicsAPI.h"
 #include "Renderer/Renderer2D.h"
 
 #include "Events.h"

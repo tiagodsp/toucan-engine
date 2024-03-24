@@ -4,13 +4,13 @@
 namespace Toucan
 {
 
-class VertexBuffer;
-class IndexBuffer;
+class RHI_VertexBuffer;
+class RHI_IndexBuffer;
 
 class CORE_API Renderer2D
 {
-  Ref<VertexBuffer> m_VertexBuffer;
-  Ref<IndexBuffer> m_IndexBuffer;
+  Ref<RHI_VertexBuffer> m_VertexBuffer;
+  Ref<RHI_IndexBuffer> m_IndexBuffer;
 
   public:
     /**
@@ -22,7 +22,7 @@ class CORE_API Renderer2D
     /**
      * @brief Initialize the renderer
      */
-    void Init();
+    void Initialize();
 
     /**
      * @brief Shutdown the renderer

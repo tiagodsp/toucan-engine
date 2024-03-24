@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "Globals.h"
-#include "Renderer/GraphicsAPI.h"
+#include "RHI/RHI_GraphicsAPI.h"
 #include "Renderer/Renderer2D.h"
 #include <memory>
 
@@ -12,43 +12,43 @@ Ref<Renderer> Renderer::Get()
     return instance;
 }
 
-void Renderer::Init()
+void Renderer::Initialize()
 {
-    GraphicsAPI::Get()->Init();
-    Renderer2D::Get()->Init();
+    RHI_GraphicsAPI::Get()->Initialize();
+    Renderer2D::Get()->Initialize();
     Vector2 viewportSize = Global::g_Window->GetWindowSize();
     SetViewportSize(viewportSize);
 }
 
 void Renderer::Shutdown()
 {
-    GraphicsAPI::Get()->Shutdown();
+    RHI_GraphicsAPI::Get()->Shutdown();
     Renderer2D::Get()->Shutdown();
 }
 
 void Renderer::Begin()
 {
-    GraphicsAPI::Get()->BeginScene();
+    RHI_GraphicsAPI::Get()->BeginScene();
 }
 
 void Renderer::End()
 {
-    GraphicsAPI::Get()->EndScene();
+    RHI_GraphicsAPI::Get()->EndScene();
 }
 
 void Renderer::Clear(const LinearColor &color)
 {
-    GraphicsAPI::Get()->SetClearColor(color);
-    GraphicsAPI::Get()->Clear();
+    RHI_GraphicsAPI::Get()->SetClearColor(color);
+    RHI_GraphicsAPI::Get()->Clear();
 }
 
 void Renderer::SetClearState(const LinearColor &color)
 {
-    GraphicsAPI::Get()->SetClearColor(color);
+    RHI_GraphicsAPI::Get()->SetClearColor(color);
 }
 
 void Renderer::SetViewportSize(const Vector2Int &Size)
 {
-    GraphicsAPI::Get()->SetViewport(0, 0, Size.x, Size.y);
+    RHI_GraphicsAPI::Get()->SetViewport(0, 0, Size.x, Size.y);
 }
 } // namespace Toucan

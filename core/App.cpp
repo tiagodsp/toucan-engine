@@ -33,7 +33,7 @@ void App::Run()
 {
     CORE_LOGI("GameDir: {}", Path::ExecutableDir());
 
-    Renderer::Get()->Init();
+    Renderer::Get()->Initialize();
     Renderer::Get()->SetClearState({0.2f, 0.2f, 0.2f, 1.0f});
 
     while (!m_ShouldTerminate)

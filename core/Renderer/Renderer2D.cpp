@@ -2,9 +2,9 @@
 
 #include "Globals.h"
 
-#include "Renderer/Buffer.h"
+#include "RHI/RHI_Buffer.h"
 #include "Renderer/Shader.h"
-#include "Renderer/GraphicsAPI.h"
+#include "RHI/RHI_GraphicsAPI.h"
 
 namespace Toucan
 {
@@ -13,7 +13,7 @@ Ref<Renderer2D> Renderer2D::Get()
     static Ref<Renderer2D> instance = std::make_shared<Renderer2D>();
     return instance;
 }
-void Renderer2D::Init() {
+void Renderer2D::Initialize() {
     // Create a Vertex buffer for 2D primitives;
     // square with 4 vertices, each vertex has 3 floats for position and 4 floats for color.
     float* vertices = new float[4 * 7]{
@@ -23,7 +23,7 @@ void Renderer2D::Init() {
         -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
     };
     
-    m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(float) * 4 * 7, {
+    m_VertexBuffer = RHI_VertexBuffer::Create(vertices, sizeof(float) * 4 * 7, {
         { BufferElementType::Float3, "POSITION"},
         { BufferElementType::Float4, "COLOR"}
     });
@@ -35,7 +35,7 @@ void Renderer2D::Init() {
         2, 3, 0
     };
 
-    m_IndexBuffer = IndexBuffer::Create(indices, 6);
+    m_IndexBuffer = RHI_IndexBuffer::Create(indices, 6);
 
     Ref<ShaderLibrary> PrimitivesLibrary = ShaderLibrary::Create("Default");
     PrimitivesLibrary->Load("Color");
@@ -44,11 +44,11 @@ void Renderer2D::Init() {
 void Renderer2D::Shutdown() {}
 
 void Renderer2D::DrawRect(const Rect &rect, const LinearColor &color) {
-    m_VertexBuffer->Bind();
-    m_IndexBuffer->Bind();
+    RHI_GraphicsAPI::Get()->SetVertexBuffer(m_VertexBuffer);
+    RHI_GraphicsAPI::Get()->SetIndexBuffer(m_IndexBuffer);
     
     Ref<ShaderLibrary> PrimitivesLibrary = ShaderLibrary::GetLibrary("Default");
     Ref<Shader> m_ShaderProgram = PrimitivesLibrary->GetShader("Color");
-    GraphicsAPI::Get()->Submit(m_ShaderProgram);
+    RHI_GraphicsAPI::Get()->Submit(m_ShaderProgram);
 }
 } // namespace Toucan

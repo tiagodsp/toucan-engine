@@ -2,7 +2,7 @@
 
 #include "Utils/Path.h"
 
-#include "bgfx/bgfxShader.h"
+#include "RHI/bgfx/bgfxShader.h"
 #include "fmt/format.h"
 #include <memory>
 

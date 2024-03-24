@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreTypes.h"
+#include "RHI_Resource.h"
 
 namespace Toucan
 {
@@ -96,18 +97,22 @@ class CORE_API BufferLayout
     }
 };
 
-class CORE_API Buffer
+class CORE_API RHI_Buffer : public IRHI_Resource
 {
   protected:
     BufferLayout m_Layout;
     uint32 m_Size;
 
+  protected:
+    RHI_Buffer() = delete;
+
+    RHI_Buffer(void *RHI_ResourceHandle, const BufferLayout &Layout, uint32 Size)
+        : IRHI_Resource(RHI_ResourceHandle), m_Layout(Layout), m_Size(Size){};
+
+    RHI_Buffer(void *RHI_ResourceHandle, uint32 Size)
+        : IRHI_Resource(RHI_ResourceHandle), m_Size(Size), m_Layout({}){};
+
   public:
-    Buffer() : m_Layout({}), m_Size(0) {}
-
-    virtual void Bind() = 0;
-    virtual void Unbind() = 0;
-
     /**
      * @brief Get the Layout descriptor object of this buffer.
      * @return const BufferLayout& - Layout descriptor of this buffer.
@@ -122,37 +127,34 @@ class CORE_API Buffer
 
     /** Get buffer total size in bytes. */
     virtual uint32 GetSize() { return m_Size; };
-
-    /**
-     * @brief Set buffer data
-     * @param Data Pointer to the data to be set.
-     * @param Size Size in bytes of the data to be set.
-     */
-    virtual void SetData(void *Data, uint32 Size) = 0;
 };
 
-class CORE_API VertexBuffer : public Buffer
+class CORE_API RHI_VertexBuffer : public RHI_Buffer
 {
   public:
+    RHI_VertexBuffer(void *RHI_ResourceHandle, const BufferLayout &Layout, uint32 Size)
+        : RHI_Buffer(RHI_ResourceHandle, Layout, Size){};
     /**
      * @brief Create a vertex buffer for the current active renderer.
      * @param Vertices Pointer to vertex array data.
      * @param Size Size in bytes of the vertex array.
      * @return Reference to the created VertexBuffer.
      */
-    static Ref<VertexBuffer> Create(void *Vertices, uint32 Size, const BufferLayout &Layout);
+    static Ref<RHI_VertexBuffer> Create(void *Vertices, uint32 Size, const BufferLayout &Layout);
 };
 
-class CORE_API IndexBuffer : public Buffer
+class CORE_API RHI_IndexBuffer : public RHI_Buffer
 {
   public:
+    RHI_IndexBuffer(void *RHI_ResourceHandle, uint32 Size)
+        : RHI_Buffer(RHI_ResourceHandle, Size){};
     /**
      * @brief Create a index buffer for the current active renderer.
      * @param Indexes Pointer to the index array data.
      * @param Count Number of elements in the index array.
      * @return Reference to the created IndexBuffer.
      */
-    static Ref<IndexBuffer> Create(void *Indexes, uint32 Count);
+    static Ref<RHI_IndexBuffer> Create(void *Indexes, uint32 Count);
 };
 
 } // namespace Toucan

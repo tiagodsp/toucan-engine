@@ -16,7 +16,7 @@ class CORE_API Renderer
     /**
      * @brief Initialize the renderer
      */
-    void Init();
+    void Initialize();
     
     /**
      * @brief Shutdown the renderer
