@@ -13,11 +13,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_BUILD_RPATH "./")
 set(CMAKE_INSTALL_RPATH "./")
 
-# set(TOUCAN_BUILD_DIR ${CMAKE_CURRENT_LIST_DIR}/output)
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${TOUCAN_BUILD_DIR}/bin)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${TOUCAN_BUILD_DIR}/lib)
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${TOUCAN_BUILD_DIR}/lib)
-
 # Set compiler flags -----------------------------------------------------------------------------------
 message("Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -83,6 +78,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
         -Wno-reserved-id-macro
         -Wno-ambiguous-reversed-operator
         -Wno-deprecated-declarations
+        -Wno-declaration-after-statement
     )
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # MSVC
@@ -100,23 +96,20 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Emscripten")
 endif()
 # ----------------------------------------------------------------------------------------------------
 
-#check if conanbuildinfo.cmake exists
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-  #if not, generate it
-  execute_process(
-    COMMAND conan install . -if=${CMAKE_CURRENT_LIST_DIR}/build --build=missing
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-  )
-endif()
+# Conan dependencies
+find_package(glm REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(spdlog REQUIRED)
+find_package(imgui REQUIRED)
 
-# include conan cmake modules
-include(build/conanbuildinfo.cmake)
-conan_basic_setup(NO_OUTPUT_DIRS KEEP_RPATHS)
+set(CONANDEPS glm SDL2 spdlog imgui)
+
+message("Conan dependencies: ${CONANDEPS}")
 
 # Conan install command
 add_custom_target(
     conan_install
-    COMMAND conan install . -if=${CMAKE_CURRENT_LIST_DIR}/build --build=missing
+    COMMAND conan install . -of=${CMAKE_CURRENT_LIST_DIR}/build --build=missing -s build_type=${CMAKE_BUILD_TYPE}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
@@ -133,16 +126,24 @@ add_custom_target(
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
+# Conan dependencies
+find_package(glm)
+find_package(SDL2)
+find_package(spdlog)
+find_package(imgui)
+
+set(CONANDEPS  glm::glm  SDL2::SDL2main  spdlog::spdlog  imgui::imgui )
 
 # Toucan ---------------------------------------------------------------
 file(GLOB_RECURSE SOURCES core/*.cpp)
 file(GLOB_RECURSE PCHEADERS core/*.PCH.h)
 add_library(${PROJECT_NAME}_core SHARED ${SOURCES})
-target_link_libraries(${PROJECT_NAME}_core PRIVATE ${CONAN_LIBS})
+target_link_libraries(${PROJECT_NAME}_core PUBLIC ${CONANDEPS})
 target_include_directories(${PROJECT_NAME}_core PUBLIC ${CMAKE_CURRENT_LIST_DIR}/core)
 target_precompile_headers(${PROJECT_NAME}_core PRIVATE ${PCHEADERS})
 add_dependencies(${PROJECT_NAME}_core copy_data)
 
+# Add thirdparty libraries
 add_subdirectory(3rdparty)
 target_link_libraries(${PROJECT_NAME}_core PRIVATE thirdparty_libs)
 

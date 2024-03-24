@@ -4,26 +4,22 @@
 include(ProcessorCount)
 ProcessorCount(CORE_COUNT)
 
-# detect the platform
-if (WIN32)
-    set(PLATFORM "windows")
-elseif (APPLE)
+# Platform detection
+string(TOLOWER ${CMAKE_SYSTEM_NAME} PLATFORM)
+if(PLATFORM STREQUAL "darwin")
     set(PLATFORM "osx")
-elseif (UNIX)
-    set(PLATFORM "linux")
 endif()
 
-# detect if arm or x86
+# Architecture detection
 if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "arm")
     set(ARCH "arm64")
 else()
     set(ARCH "x64")
 endif()
 
-# detect the build type
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set(BUILD_TYPE "debug")
-else()
+# Build type detection
+set(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+if(NOT BUILD_TYPE)
     set(BUILD_TYPE "release")
 endif()
 
@@ -31,41 +27,40 @@ endif()
 add_custom_target(
     bgfx_build
     COMMAND make ${PLATFORM}-${ARCH}-${BUILD_TYPE} -j ${CORE_COUNT}
-    BYPRODUCTS
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbgfx${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbimg_decode${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbimg_encode${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbimg${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbx${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libfcpp${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libglsl-optimizer${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libglslang${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libspirv-cross${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libspirv-opt${CMAKE_BUILD_TYPE}.a
-    ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/shaderc${CMAKE_BUILD_TYPE}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bgfx
     USES_TERMINAL
 )
 
-#bgfx
-add_library(bgfx STATIC IMPORTED)
-target_include_directories(bgfx INTERFACE ${CMAKE_CURRENT_LIST_DIR}/bgfx/include)
-set_target_properties(bgfx PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbgfx${CMAKE_BUILD_TYPE}.a)
-add_dependencies(bgfx bgfx_build)
+add_custom_command(
+    TARGET bgfx_build
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/bgfx/tools
+    # copy shaderc, texturec, geometryc, geometryv
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/shaderc${CMAKE_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/bgfx/tools/shaderc
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/texturec${CMAKE_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/bgfx/tools/texturec
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/geometryc${CMAKE_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/bgfx/tools/geometryc
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/geometryv${CMAKE_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/bgfx/tools/geometryv
+)
 
-#shaderc
-add_executable(shaderc IMPORTED)
-set_target_properties(shaderc PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/shaderc${CMAKE_BUILD_TYPE})
-add_dependencies(shaderc bgfx_build)
+function(create_imported_target TARGET_NAME TYPE)
+    if(${TYPE} STREQUAL "library")
+        add_library(${TARGET_NAME} STATIC IMPORTED)
+        set_target_properties(${TARGET_NAME} PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/lib${TARGET_NAME}${BUILD_TYPE}.a)
+    elseif(${TYPE} STREQUAL "executable")
+        add_executable(${TARGET_NAME} IMPORTED)
+        set_target_properties(${TARGET_NAME}
+            PROPERTIES
+                IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/${TARGET_NAME}${BUILD_TYPE}
+        )
+    endif()
+    target_include_directories(${TARGET_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR}/${TARGET_NAME}/include)
+    add_dependencies(${TARGET_NAME} bgfx_build)
+endfunction()
 
-#bimg
-add_library(bimg STATIC IMPORTED)
-target_include_directories(bimg INTERFACE ${CMAKE_CURRENT_LIST_DIR}/bimg/include)
-set_target_properties(bimg PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbimg${CMAKE_BUILD_TYPE}.a)
-
-#bx
-add_library(bx STATIC IMPORTED)
-target_include_directories(bx INTERFACE ${CMAKE_CURRENT_LIST_DIR}/bx/include)
-set_target_properties(bx PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/${PLATFORM}-${ARCH}/bin/libbx${CMAKE_BUILD_TYPE}.a)
+# Create imported targets
+create_imported_target(bgfx "library")
+create_imported_target(bimg "library")
+create_imported_target(bx "library")
+create_imported_target(shaderc "executable")
 
 target_link_libraries(bgfx INTERFACE bimg bx)
