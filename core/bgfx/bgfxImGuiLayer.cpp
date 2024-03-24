@@ -29,7 +29,7 @@ void BgfxImGuiLayer::OnAttach()
     ImGui::GetIO().BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
     // ImGui::GetIO().ConfigFlags  |= ImGuiConfigFlags_NavEnableKeyboard;
     // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
 void BgfxImGuiLayer::OnDetach()
