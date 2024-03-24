@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreTypes.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace Toucan
 {
@@ -8,6 +9,7 @@ class Window;
 class Layer;
 class LayerStack;
 class Event;
+class ImGuiLayer;
 
 class CORE_API App
 {
@@ -24,6 +26,7 @@ class CORE_API App
     Ref<Window> m_Window;
     Ref<LayerStack> m_LayerStack;
     bool m_ShouldTerminate = false;
+    Ref<ImGuiLayer> m_ImGuiLayer;
 };
 
 } // namespace Toucan

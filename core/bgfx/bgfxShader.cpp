@@ -61,7 +61,7 @@ bool BgfxShader::Compile()
     {
         LOGI(BgfxShader, "Compiling fragment shader: {}", m_FragmentFilepath);
         auto result = Subprocess::Run(
-            "./shadercRelease",
+            "./3rdparty/bgfx/tools/shaderc",
             {"--type",
              "f",
              "--platform",
@@ -86,7 +86,7 @@ bool BgfxShader::Compile()
     {
         LOGI(BgfxShader, "Compiling vertex shader: {}", m_VertexFilepath);
         auto result = Subprocess::Run(
-            "./shadercRelease",
+            "./3rdparty/bgfx/tools/shaderc",
             {"--type",
              "v",
              "--platform",

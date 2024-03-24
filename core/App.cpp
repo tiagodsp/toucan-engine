@@ -4,6 +4,7 @@
 #include "Core/Events/KeyEvents.h"
 #include "Core/Events/MouseEvents.h"
 
+#include "ImGui/ImGuiLayer.h"
 #include "Renderer/Renderer.h"
 #include "Utils/Path.h"
 #include "Window.h"
@@ -23,6 +24,9 @@ App::App(const char *Name)
 
     m_Window = Window::Create(params);
     m_Window->SetEventCallback([this](Event *event) { OnEvent(event); });
+
+    m_ImGuiLayer = ImGuiLayer::Create();
+    PushLayer(m_ImGuiLayer);
 }
 
 void App::Run()
@@ -39,10 +43,12 @@ void App::Run()
             layer->OnUpdate();
         }
 
+        m_ImGuiLayer->Begin();
         for (auto &layer : *m_LayerStack)
         {
             layer->OnImGuiRender();
         }
+        m_ImGuiLayer->End();
 
         m_Window->Update();
     }
@@ -61,7 +67,7 @@ void App::OnEvent(Event *event)
         glm::vec2 NewSize = {((WindowResizeEvent*)e)->GetWidth(), ((WindowResizeEvent*)e)->GetHeight()};
         LOGI(LogEvent,"Window resized to: {}x{}", NewSize.x, NewSize.y);
         // TODO - Resize viewport
-        return true;
+        return false;
     });
 
     // Dispatch events to layer stack from overlay to base layer. If an event is handled, stop dispatching.
@@ -71,6 +77,18 @@ void App::OnEvent(Event *event)
         if (event->IsHandled())
             break;
     }
+}
+
+void App::PushLayer(Ref<Layer> layer)
+{
+    m_LayerStack->PushLayer(layer);
+    layer->OnAttach();
+}
+
+void App::PushOverlay(Ref<Layer> overlay)
+{
+    m_LayerStack->PushOverlay(overlay);
+    overlay->OnAttach();
 }
 
 } // namespace Toucan

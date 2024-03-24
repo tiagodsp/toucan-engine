@@ -5,5 +5,6 @@
 #include <utility>
 #include <memory>
 #include <cstddef>
+#include <functional>
 #include "glm/glm.hpp"
 #include "core.api.gen.h"

@@ -76,7 +76,7 @@ void DarwinWindow::Update()
 
     // TODO - Just to test the renderer. Remove this later.
     Renderer::Get()->Clear(LinearColor(0.2f, 0.2f, 0.2f, 1.0f));
-    Renderer2D::Get()->DrawRect(Rect(10), LinearColor(0.2f, 0.2f, 1.0f, 1.0f));
+    // Renderer2D::Get()->DrawRect(Rect(10), LinearColor(0.2f, 0.2f, 1.0f, 1.0f));
 }
 
 void DarwinWindow::PollEvents()
@@ -114,7 +114,8 @@ void DarwinWindow::PollEvents()
     {
         if (event.window.event == SDL_WINDOWEVENT_RESIZED)
         {
-            m_EventCallback(new WindowResizeEvent({(uint32)event.window.data1, (uint32)event.window.data2}));
+            m_WindowSize = {event.window.data1, event.window.data2};
+            m_EventCallback(new WindowResizeEvent(event.window.data1, event.window.data2));
         }
     }
 }

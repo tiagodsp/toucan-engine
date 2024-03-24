@@ -1,6 +1,8 @@
 #include "bgfxGraphicsAPI.h"
 #include <bgfx/bgfx.h>
+#include <bgfx/defines.h>
 #include <bgfx/platform.h>
+#include "CoreTypes.h"
 #include "Globals.h"
 
 #include <cstddef>
@@ -27,13 +29,9 @@ void BgfxGraphicsAPI::Init()
     bgfx::renderFrame();                   // tells bgfx to start single threaded mode (?)
     bgfx::Init init;                       // initialize bgfx
     init.type = bgfx::RendererType::Count; // tells bgfx to use the default renderer
-    init.resolution.width = 800;
-    init.resolution.height = 600;
     init.platformData.ndt = NULL;
     init.platformData.nwh = Global::g_Window->GetNativeWindow(); // get the native window handle from the window class
     bgfx::init(init);                                            // initialize bgfx
-    bgfx::setViewRect(0, 0, 0, uint32_t(800), uint32_t(600));
-
     bgfx::setDebug(BGFX_DEBUG_TEXT); // Enable debug text.
 }
 
@@ -44,28 +42,34 @@ void BgfxGraphicsAPI::Shutdown()
 
 void BgfxGraphicsAPI::BeginScene()
 {
-    m_Context->m_Encoder = bgfx::begin();
+    bgfx::begin();
 }
 
 void BgfxGraphicsAPI::EndScene()
 {
-    bgfx::end(m_Context->m_Encoder);
+    bgfx::frame();
+    // bgfx::end(m_Context->m_Encoder);
 }
 
 void BgfxGraphicsAPI::SetClearColor(const LinearColor &color)
 {
-    unsigned int rgba = 0;
-    rgba |= (unsigned int)(glm::clamp(color.r, .0f, 1.0f) * 255.0f) << 24;
-    rgba |= (unsigned int)(glm::clamp(color.g, .0f, 1.0f) * 255.0f) << 16;
-    rgba |= (unsigned int)(glm::clamp(color.b, .0f, 1.0f) * 255.0f) << 8;
-    rgba |= (unsigned int)(glm::clamp(color.a, .0f, 1.0f) * 255.0f);
-    bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, rgba, 1.0f, 0);
+    m_ClearColor = color;
+}
+
+void BgfxGraphicsAPI::SetViewport(uint32 x, uint32 y, uint32 width, uint32 height)
+{
+    bgfx::setViewRect(0, x, y, width, height);
+    bgfx::reset(width, height, BGFX_RESET_NONE);
 }
 
 void BgfxGraphicsAPI::Clear()
 {
-    bgfx::setViewRect(0, 0, 0, uint32_t(800), uint32_t(600));
-    bgfx::touch(0);
+    unsigned int rgba = 0;
+    rgba |= (unsigned int)(glm::clamp(m_ClearColor.r, .0f, 1.0f) * 255.0f) << 24;
+    rgba |= (unsigned int)(glm::clamp(m_ClearColor.g, .0f, 1.0f) * 255.0f) << 16;
+    rgba |= (unsigned int)(glm::clamp(m_ClearColor.b, .0f, 1.0f) * 255.0f) << 8;
+    rgba |= (unsigned int)(glm::clamp(m_ClearColor.a, .0f, 1.0f) * 255.0f);    
+    bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, rgba, 1.0f, 0);
 }
 
 void BgfxGraphicsAPI::Submit(const Ref<Shader>& ShaderProgram)
@@ -83,7 +87,6 @@ void BgfxGraphicsAPI::Submit(const Ref<Shader>& ShaderProgram)
 
     bgfx::setState(state);
     bgfx::submit(0, *static_cast<bgfx::ProgramHandle*>(ShaderProgram->GetNativeHandle()));
-    bgfx::frame(); // TODO - this should be called in EndScene()
 }
 
 void BgfxGraphicsAPI::DrawIndexed()

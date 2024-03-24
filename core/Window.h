@@ -26,8 +26,11 @@ class CORE_API Window
     static Ref<Window> Create(WindowInitializationParams params);
     inline HANDLE GetNativeWindow() const { return m_NativeWindowHandle; }
 
+    Vector2Int GetWindowSize() const { return m_WindowSize; }
+
   protected:
     HANDLE m_NativeWindowHandle;
+    Vector2Int m_WindowSize;
 };
 
 } // namespace Toucan

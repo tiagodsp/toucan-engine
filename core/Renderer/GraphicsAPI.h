@@ -36,6 +36,8 @@ class CORE_API GraphicsAPI
     virtual void EndScene() = 0;
     /** Set the clear color. */
     virtual void SetClearColor(const LinearColor &color) = 0;
+    /** Set the viewport. */
+    virtual void SetViewport(uint32 x, uint32 y, uint32 width, uint32 height) = 0;
     /** Clear the screen. */
     virtual void Clear() = 0;
     /** Get the name of the graphics API. */

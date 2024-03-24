@@ -4,17 +4,17 @@
 namespace Toucan
 {
 
-extern class Window;
-extern class GraphicsContext;
-extern class GraphicsAPI;
-extern class Renderer2D;
+class Window;
+class GraphicsContext;
+class GraphicsAPI;
+class Renderer2D;
 
 struct CORE_API Global
 {
-    static class Window *g_Window;
-    static class GraphicsContext *g_GraphicsContext;
-    static class GraphicsAPI *g_GraphicsAPI;
-    static class Renderer2D *g_Renderer2D;
+    static Window *g_Window;
+    static GraphicsContext *g_GraphicsContext;
+    static GraphicsAPI *g_GraphicsAPI;
+    static Renderer2D *g_Renderer2D;
 };
 
 } // namespace Toucan

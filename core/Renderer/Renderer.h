@@ -1,4 +1,5 @@
 #pragma once
+#include "CoreTypes.h"
 #include "Toucan.h"
 
 namespace Toucan
@@ -43,5 +44,11 @@ class CORE_API Renderer
      * @param color The color to clear the screen with
      */
      void SetClearState(const LinearColor &color);
+
+     /**
+      * @brief Set the viewport size
+      * @param Size The size of the viewport
+      */
+      void SetViewportSize(const Vector2Int &Size);
 };
 } // namespace Toucan
