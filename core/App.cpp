@@ -46,7 +46,7 @@ void App::Run()
         m_ImGuiLayer->Begin();
         for (auto &layer : *m_LayerStack)
         {
-            layer->OnImGuiRender();
+            layer->OnImGuiRender(m_ImGuiLayer->GetImGuiContext());
         }
         m_ImGuiLayer->End();
 

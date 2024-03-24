@@ -1,5 +1,6 @@
 #pragma once
 #include "Layer.h"
+#include <imgui.h>
 
 namespace Toucan
 {
@@ -14,5 +15,6 @@ class CORE_API ImGuiLayer : public Layer
     static Ref<ImGuiLayer> Create();
     virtual void Begin() = 0;
     virtual void End() = 0;
+    virtual ImGuiContext* GetImGuiContext() = 0;
 };
 } // namespace Toucan

@@ -1,4 +1,5 @@
 #include "Layer.h"
+#include <imgui.h>
 
 namespace Toucan
 {
@@ -13,7 +14,7 @@ void Layer::OnDetach() {}
 
 void Layer::OnUpdate() {}
 
-void Layer::OnImGuiRender() {}
+void Layer::OnImGuiRender(ImGuiContext* context) {}
 
 void Layer::OnEvent(Event *event) {}
 

@@ -22,7 +22,7 @@ BgfxImGuiLayer::~BgfxImGuiLayer() {}
 
 void BgfxImGuiLayer::OnAttach() 
 {
-    ImGui::CreateContext();
+    m_ImGuiContext = ImGui::CreateContext();
     ImGui_Implbgfx_Init(0);
     ImGui::GetIO().DisplaySize = {(float)Global::g_Window->GetWindowSize().x, (float)Global::g_Window->GetWindowSize().y};
     ImGui::GetIO().BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
@@ -57,7 +57,7 @@ void BgfxImGuiLayer::OnUpdate()
 {
 }
 
-void BgfxImGuiLayer::OnImGuiRender()
+void BgfxImGuiLayer::OnImGuiRender(ImGuiContext *context)
 {
     static bool show = true;
     ImGui::ShowDemoWindow(&show);

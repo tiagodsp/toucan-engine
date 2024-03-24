@@ -2,6 +2,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Renderer2D.h"
 #include "Toucan.h"
+#include <imgui.h>
 
 namespace Toucan
 {
@@ -14,7 +15,7 @@ class EditorLayer : public Layer
     virtual void OnAttach() override;
     virtual void OnDetach() override;
     virtual void OnUpdate() override;
-    virtual void OnImGuiRender() override;
+    virtual void OnImGuiRender(ImGuiContext* context) override;
     virtual void OnEvent(Event *event) override;
 
   private:

@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreTypes.h"
+#include <imgui.h>
 
 namespace Toucan
 {
@@ -21,7 +22,7 @@ class CORE_API Layer
     virtual void OnAttach();
     virtual void OnDetach();
     virtual void OnUpdate();
-    virtual void OnImGuiRender();
+    virtual void OnImGuiRender(ImGuiContext *context);
     virtual void OnEvent(Event *event);
 
     inline const std::string &GetName() const { return m_Name; }
