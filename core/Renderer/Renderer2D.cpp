@@ -3,7 +3,7 @@
 #include "Globals.h"
 
 #include "RHI/RHI_Buffer.h"
-#include "Renderer/Shader.h"
+#include "RHI/RHI_Shader.h"
 #include "RHI/RHI_GraphicsAPI.h"
 
 namespace Toucan
@@ -48,7 +48,7 @@ void Renderer2D::DrawRect(const Rect &rect, const LinearColor &color) {
     RHI_GraphicsAPI::Get()->SetIndexBuffer(m_IndexBuffer);
     
     Ref<ShaderLibrary> PrimitivesLibrary = ShaderLibrary::GetLibrary("Default");
-    Ref<Shader> m_ShaderProgram = PrimitivesLibrary->GetShader("Color");
+    Ref<RHI_Shader> m_ShaderProgram = PrimitivesLibrary->GetShader("Color");
     RHI_GraphicsAPI::Get()->Submit(m_ShaderProgram);
 }
 } // namespace Toucan

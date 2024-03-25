@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreTypes.h"
+#include "RHI/RHI_Shader.h"
 #include "Toucan.h"
 #include "RHI/RHI_GraphicsAPI.h"
 
@@ -8,7 +9,7 @@ namespace Toucan
 
 class RHI_IndexBuffer;
 class RHI_VertexBuffer;
-class Shader;
+class RHI_Shader;
 
 class CORE_LOCAL Bgfx_GraphicsAPI : public RHI_GraphicsAPI
 {
@@ -26,7 +27,7 @@ class CORE_LOCAL Bgfx_GraphicsAPI : public RHI_GraphicsAPI
     virtual void SetViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
     virtual void Clear() override;
 
-    virtual void Submit(const Ref<Shader>& ShaderProgram) override;
+    virtual void Submit(const Ref<RHI_Shader>& ShaderProgram) override;
 
     virtual void SetVertexBuffer(const Ref<RHI_VertexBuffer>& VertexBuffer) override;
     virtual void SetIndexBuffer(const Ref<RHI_IndexBuffer>& IndexBuffer) override;

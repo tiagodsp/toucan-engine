@@ -106,11 +106,15 @@ class CORE_API RHI_Buffer : public IRHI_Resource
   protected:
     RHI_Buffer() = delete;
 
-    RHI_Buffer(void *RHI_ResourceHandle, const BufferLayout &Layout, uint32 Size)
-        : IRHI_Resource(RHI_ResourceHandle), m_Layout(Layout), m_Size(Size){};
+    RHI_Buffer(void *RHI_ResourceHandle, const BufferLayout &Layout, uint32 Size) : m_Layout(Layout), m_Size(Size)
+    {
+        m_RHI_ResourceHandle = RHI_ResourceHandle;
+    };
 
-    RHI_Buffer(void *RHI_ResourceHandle, uint32 Size)
-        : IRHI_Resource(RHI_ResourceHandle), m_Size(Size), m_Layout({}){};
+    RHI_Buffer(void *RHI_ResourceHandle, uint32 Size) : m_Size(Size), m_Layout({})
+    {
+        m_RHI_ResourceHandle = RHI_ResourceHandle;
+    };
 
   public:
     /**
@@ -146,8 +150,7 @@ class CORE_API RHI_VertexBuffer : public RHI_Buffer
 class CORE_API RHI_IndexBuffer : public RHI_Buffer
 {
   public:
-    RHI_IndexBuffer(void *RHI_ResourceHandle, uint32 Size)
-        : RHI_Buffer(RHI_ResourceHandle, Size){};
+    RHI_IndexBuffer(void *RHI_ResourceHandle, uint32 Size) : RHI_Buffer(RHI_ResourceHandle, Size){};
     /**
      * @brief Create a index buffer for the current active renderer.
      * @param Indexes Pointer to the index array data.

@@ -1,8 +1,8 @@
-#include "Shader.h"
+#include "RHI_Shader.h"
 
 #include "Utils/Path.h"
 
-#include "RHI/bgfx/bgfxShader.h"
+#include "RHI/bgfx/Bgfx_Shader.h"
 #include "fmt/format.h"
 #include <memory>
 
@@ -11,9 +11,9 @@ namespace Toucan
 
 Map<String, Ref<ShaderLibrary>> ShaderLibrary::s_ShaderLibraries = {};
 
-Ref<Shader> Shader::Create(const String &Name, const String &FragmentFilepath, const String &VertexFilepath)
+Ref<RHI_Shader> RHI_Shader::Create(const String &Name, const String &FragmentFilepath, const String &VertexFilepath)
 {
-    return std::make_shared<BgfxShader>(Name, FragmentFilepath, VertexFilepath);
+    return std::make_shared<Bgfx_Shader>(Name, FragmentFilepath, VertexFilepath);
 }
 
 ShaderLibrary::ShaderLibrary() {}
@@ -24,11 +24,11 @@ void ShaderLibrary::Load(const String &name)
 {
     String fragmentFileName = fmt::format("fs_{}.sc", name);
     String vertexFileName = fmt::format("vs_{}.sc", name);
-    m_Shaders[name] = Shader::Create(
+    m_Shaders[name] = RHI_Shader::Create(
         name, Path::Join(Path::ShaderDir(), fragmentFileName), Path::Join(Path::ShaderDir(), vertexFileName));
 }
 
-Ref<Shader> ShaderLibrary::GetShader(const String &name)
+Ref<RHI_Shader> ShaderLibrary::GetShader(const String &name)
 {
     return m_Shaders[name];
 }

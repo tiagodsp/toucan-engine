@@ -87,7 +87,7 @@ void Bgfx_GraphicsAPI::SetIndexBuffer(const Ref<RHI_IndexBuffer>& IndexBuffer)
     bgfx::setIndexBuffer(bgfx::IndexBufferHandle{handle});
 }
 
-void Bgfx_GraphicsAPI::Submit(const Ref<Shader>& ShaderProgram)
+void Bgfx_GraphicsAPI::Submit(const Ref<RHI_Shader>& ShaderProgram)
 {
     // submit and draw the shader program
     uint64_t state = 0
@@ -101,7 +101,7 @@ void Bgfx_GraphicsAPI::Submit(const Ref<Shader>& ShaderProgram)
 				| BGFX_STATE_MSAA;
 
     bgfx::setState(state);
-    bgfx::submit(0, *static_cast<bgfx::ProgramHandle*>(ShaderProgram->GetNativeHandle()));
+    bgfx::submit(0, {static_cast<uint16_t>(reinterpret_cast<uintptr_t>(ShaderProgram->GetRHIResourceHandle()))});
 }
 
 void Bgfx_GraphicsAPI::DrawIndexed()

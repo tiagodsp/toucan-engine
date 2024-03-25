@@ -4,7 +4,7 @@
 namespace Toucan
 {
 
-class Shader;
+class RHI_Shader;
 class RHI_VertexBuffer;
 class RHI_IndexBuffer;
 class BufferLayout;
@@ -46,7 +46,7 @@ class CORE_API RHI_GraphicsAPI
     /** Get the name of the graphics API. */
     const EAPIName GetAPIName() const { return m_APIName; }
     /** Submit program to rendering */
-    virtual void Submit(const Ref<Shader>& ShaderProgram) = 0;
+    virtual void Submit(const Ref<RHI_Shader>& ShaderProgram) = 0;
     /** Set the vertex buffer */
     virtual void SetVertexBuffer(const Ref<RHI_VertexBuffer>& VertexBuffer) = 0;
     /** Set the index buffer */
