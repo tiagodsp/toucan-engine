@@ -2,8 +2,7 @@
 #include <bgfx/bgfx.h>
 #include <bgfx/defines.h>
 #include <bgfx/platform.h>
-#include "CoreTypes.h"
-#include "Globals.h"
+#include "Toucan.h"
 #include "RHI/RHI_Buffer.h"
 
 #include <cstddef>

@@ -1,6 +1,6 @@
 #pragma once
-#include "CoreTypes.h"
-#include "Events.h"
+#include "Core/CoreTypes.h"
+#include "Core/Events.h"
 
 namespace Toucan
 {

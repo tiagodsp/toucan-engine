@@ -1,6 +1,6 @@
 #include "Renderer2D.h"
 
-#include "Globals.h"
+#include "Toucan.h"
 
 #include "RHI/RHI_Buffer.h"
 #include "RHI/RHI_Shader.h"

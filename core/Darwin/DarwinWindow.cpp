@@ -2,11 +2,9 @@
 #ifdef BUILD_DARWIN
 #include "Toucan.h"
 #include "DarwinWindow.h"
-#include "Log.h"
 #include "RHI/RHI_GraphicsAPI.h"
 #include "Renderer/Renderer2D.h"
 
-#include "Events.h"
 #include "Core/Events/WindowEvents.h"
 #include "Core/Events/KeyEvents.h"
 #include "Core/Events/MouseEvents.h"

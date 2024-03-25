@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "Globals.h"
+#include "Toucan.h"
 #include "RHI/RHI_GraphicsAPI.h"
 #include "Renderer/Renderer2D.h"
 #include <memory>

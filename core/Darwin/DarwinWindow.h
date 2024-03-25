@@ -1,6 +1,5 @@
 #pragma once
-#include "CoreTypes.h"
-#include "Window.h"
+#include "Core/Window.h"
 
 union SDL_Event;
 

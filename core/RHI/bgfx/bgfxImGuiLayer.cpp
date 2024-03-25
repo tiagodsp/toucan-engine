@@ -1,10 +1,6 @@
 #include "bgfxImGuiLayer.h"
 #include "Core/Events/MouseEvents.h"
 #include "Core/Events/WindowEvents.h"
-#include "CoreTypes.h"
-#include "Events.h"
-#include "Globals.h"
-#include "Log.h"
 #include "Toucan.h"
 
 #include "bgfx/bgfx.h"

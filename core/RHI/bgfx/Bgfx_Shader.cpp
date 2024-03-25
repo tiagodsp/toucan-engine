@@ -1,6 +1,6 @@
 #include "Bgfx_Shader.h"
-#include "CoreTypes.h"
-#include "Log.h"
+#include "Core/CoreTypes.h"
+#include "Core/Log.h"
 #include "RHI/RHI_Resource.h"
 #include "Utils/FileManager.h"
 #include "Utils/Path.h"

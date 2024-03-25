@@ -1,5 +1,5 @@
 #pragma once
-#include "CoreTypes.h"
+#include "Core/CoreTypes.h"
 #include "RHI/RHI_Shader.h"
 #include "Toucan.h"
 #include "RHI/RHI_GraphicsAPI.h"

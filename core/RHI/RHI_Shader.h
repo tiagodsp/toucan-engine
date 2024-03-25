@@ -1,5 +1,5 @@
 #pragma once
-#include "CoreTypes.h"
+#include "Core/CoreTypes.h"
 #include "RHI/RHI_Resource.h"
 
 namespace Toucan

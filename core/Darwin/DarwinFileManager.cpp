@@ -1,6 +1,6 @@
 #include "DarwinFileManager.h"
-#include "CoreTypes.h"
-#include "Log.h"
+#include "Core/CoreTypes.h"
+#include "Core/Log.h"
 #include "Utils/FileManager.h"
 #include <filesystem>
 #include <fstream>
