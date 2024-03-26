@@ -1,1 +1,1 @@
-conan install . -of=./build --build=missing -s build_type=Debug
+python3 scripts/generate_project.py -p build -g vs2019 -b Debug

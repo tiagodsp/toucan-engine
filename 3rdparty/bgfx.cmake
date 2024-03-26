@@ -24,12 +24,23 @@ if(NOT BUILD_TYPE)
 endif()
 
 # build bgfx library and its dependencies
-add_custom_target(
-    bgfx_build
-    COMMAND make ${PLATFORM}-${ARCH}-${BUILD_TYPE} -j ${CORE_COUNT}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bgfx
-    USES_TERMINAL
-)
+if(${PLATFORM} STREQUAL "windows")
+    add_custom_target(
+        bgfx_build
+        COMMAND ${CMAKE_CURRENT_LIST_DIR}/bx/tools/bin/windows/genie.exe --with-tools --with-examples vs2022
+        COMMAND msbuild /p:Configuration=${BUILD_TYPE} ${CMAKE_CURRENT_LIST_DIR}/bgfx/.build/projects/vs2022/bgfx.sln /p:WindowsTargetPlatformVersion=10.0
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bgfx
+        USES_TERMINAL
+    )
+else()
+    add_custom_target(
+        bgfx_build
+        COMMAND make ${PLATFORM}-${ARCH}-${BUILD_TYPE} -j ${CORE_COUNT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bgfx
+        USES_TERMINAL
+    )
+endif()
+
 
 add_custom_command(
     TARGET bgfx_build
